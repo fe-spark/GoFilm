@@ -2,12 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"server/logic"
 	"server/model/system"
 	"server/plugin/spider"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // ------------------------------------------------------ 影视采集 ------------------------------------------------------
@@ -15,7 +16,6 @@ import (
 // FilmSourceList 采集站点信息
 func FilmSourceList(c *gin.Context) {
 	system.Success(logic.CollectL.GetFilmSourceList(), "影视源站点信息获取成功", c)
-	return
 }
 
 // FindFilmSource 通过ID返回对应的资源站数据
@@ -151,6 +151,12 @@ func FilmSourceDel(c *gin.Context) {
 		system.Failed("资源站ID信息不能为空", c)
 		return
 	}
+	// 如果该站点正在采集, 则先提示不可删除
+	if spider.IsTaskRunning(id) {
+		system.Failed("站点正在采集, 请先停止采集后再尝试删除操作", c)
+		return
+	}
+	// 1. 执行数据库/内存层面的删除
 	if err := logic.CollectL.DelFilmSource(id); err != nil {
 		system.Failed("删除资源站失败", c)
 		return
@@ -177,6 +183,23 @@ func FilmSourceTest(c *gin.Context) {
 		return
 	}
 	system.SuccessOnlyMsg("测试成功!!!", c)
+}
+
+// CollectingState 获取当前正在采集的任务 ID 列表
+func CollectingState(c *gin.Context) {
+	ids := spider.GetActiveTasks()
+	system.Success(ids, "正在采集的任务 ID 列表获取成功", c)
+}
+
+// StopCollect 停止指定的采集任务
+func StopCollect(c *gin.Context) {
+	id := c.Query("id")
+	if id == "" {
+		system.Failed("非法请求, 缺失站点ID", c)
+		return
+	}
+	spider.StopTask(id)
+	system.SuccessOnlyMsg("采集任务正在停止...", c)
 }
 
 // GetNormalFilmSource 获取状态为启用的采集站信息

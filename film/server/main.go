@@ -38,15 +38,15 @@ func start() {
 }
 
 func DefaultDataInit() {
-	// 如果系统中不存在用户表则进行初始化
+	// 1. 数据库表结构初始化 (仅在用户表不存在时执行)
 	if !system.ExistUserTable() {
-		// 初始化数据库相关数据
 		SystemInit.TableInIt()
-		// 初始化网站基本配置信息
-		SystemInit.BasicConfigInit()
-		// 初始化轮播组件信息
-		SystemInit.BannersInit()
 	}
-	// 初始化影视来源列表信息, 并回复恢复定时任务
+
+	// 2. 网站基础配置和轮播图 (改为检查 Redis Key 是否存在，确保清空 Redis 后能自动恢复)
+	SystemInit.BasicConfigInit()
+	SystemInit.BannersInit()
+
+	// 3. 初始化影视来源和定时任务 (内部已带有存在性检查)
 	SystemInit.SpiderInit()
 }

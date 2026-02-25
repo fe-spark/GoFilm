@@ -1,11 +1,12 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"server/logic"
 	"server/model/system"
 	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -24,7 +25,7 @@ func Index(c *gin.Context) {
 func CategoriesInfo(c *gin.Context) {
 	//data := logic.IL.GetCategoryInfo()
 	data := logic.IL.GetNavCategory()
-	if data == nil || len(data) <= 0 {
+	if len(data) <= 0 {
 		system.Failed("暂无分类信息", c)
 		return
 	}

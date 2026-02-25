@@ -3,11 +3,12 @@ package controller
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"server/logic"
 	"server/model/system"
 	"server/plugin/spider"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // ------------------------------------------------------ 定时任务管理 ------------------------------------------------------
@@ -149,7 +150,7 @@ func validTaskAddVo(vo system.FilmCronVo) error {
 		if vo.Time == 0 {
 			return errors.New("参数校验失败, 采集时长不能为零值")
 		}
-		if vo.Ids == nil || len(vo.Ids) <= 0 {
+		if len(vo.Ids) <= 0 {
 			return errors.New("参数校验失败, 自定义更新未绑定任何资源站点")
 		}
 	case 2:

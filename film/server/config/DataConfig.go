@@ -1,17 +1,24 @@
 package config
 
-import "time"
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"time"
+)
 
 /*
  定义一些数据库存放的key值, 以及程序运行时的相关参数配置
 */
 
 // -------------------------System Config-----------------------------------
-const (
 
+var (
 	// ListenerPort web服务监听的端口
-	ListenerPort = "3601"
+	ListenerPort = ""
+)
 
+const (
 	// MAXGoroutine max goroutine, 执行spider中对协程的数量限制
 	MAXGoroutine = 10
 
@@ -19,6 +26,7 @@ const (
 	FilmPictureUrlPath   = "/upload/pic/poster/"
 	FilmPictureAccess    = "/api/upload/pic/poster/"
 )
+
 
 // -------------------------redis key-----------------------------------
 const (
@@ -81,6 +89,7 @@ const (
 	IndexCacheKey = "IndexCache"
 )
 
+
 // -------------------------Database Connection Params-----------------------------------
 const (
 	// SearchTableName 存放检索信息的数据表名
@@ -89,13 +98,73 @@ const (
 	UserIdInitialVal       = 10000
 	FileTableName          = "files"
 	FailureRecordTableName = "failure_records"
+)
 
-	//mysql服务配置信息 root:root 设置mysql账户的用户名和密码
-
-	MysqlDsn = "root:root@(mysql:3306)/FilmSite?charset=utf8mb4&parseTime=True&loc=Local"
+var (
+	// mysql服务配置信息
+	MysqlDsn = ""
 
 	// Redis连接信息
-	RedisAddr     = `redis:6379`
-	RedisPassword = `root`
+	RedisAddr     = ""
+	RedisPassword = ""
 	RedisDBNo     = 0
 )
+
+
+func init() {
+	InitConfig()
+}
+
+func InitConfig() {
+	// 加载监听端口
+	if port := os.Getenv("PORT"); port != "" {
+		ListenerPort = port
+	} else if lPort := os.Getenv("LISTENER_PORT"); lPort != "" {
+		ListenerPort = lPort
+	}
+	if ListenerPort == "" {
+		panic("环境变量缺失: PORT 或 LISTENER_PORT")
+	}
+	fmt.Printf("[Config] 加载端口: %s\n", ListenerPort)
+
+	// 加载 MySQL 配置
+	mHost := os.Getenv("MYSQL_HOST")
+	mPort := os.Getenv("MYSQL_PORT")
+	mUser := os.Getenv("MYSQL_USER")
+	mPass := os.Getenv("MYSQL_PASSWORD")
+	mDB := os.Getenv("MYSQL_DBNAME")
+
+	if mHost == "" || mPort == "" || mUser == "" || mDB == "" {
+		panic(fmt.Sprintf("环境变量缺失: MYSQL_HOST=%s, MYSQL_PORT=%s, MYSQL_USER=%s, MYSQL_DBNAME=%s",
+			mHost, mPort, mUser, mDB))
+	}
+
+	MysqlDsn = fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		mUser, mPass, mHost, mPort, mDB)
+	fmt.Printf("[Config] 加载 MySQL DSN: %s:%s@(%s:%s)/%s\n", mUser, "******", mHost, mPort, mDB)
+
+	// 加载 Redis 配置
+	rHost := os.Getenv("REDIS_HOST")
+	rPort := os.Getenv("REDIS_PORT")
+	rPass := os.Getenv("REDIS_PASSWORD")
+	rDB := os.Getenv("REDIS_DB")
+
+	if rHost == "" || rPort == "" {
+		panic(fmt.Sprintf("环境变量缺失: REDIS_HOST=%s, REDIS_PORT=%s", rHost, rPort))
+	}
+
+	RedisAddr = fmt.Sprintf("%s:%s", rHost, rPort)
+	if rPass != "" {
+		RedisPassword = rPass
+	}
+	if rDB != "" {
+		if dbNo, err := strconv.Atoi(rDB); err == nil {
+			RedisDBNo = dbNo
+		}
+	}
+	fmt.Printf("[Config] 加载 Redis 地址: %s, DB: %d\n", RedisAddr, RedisDBNo)
+}
+
+
+
+

@@ -2,12 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"server/logic"
 	"server/model/system"
 	"server/plugin/spider"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // FilmSearchPage 获取影视分页数据
@@ -132,7 +133,6 @@ func FilmClassTree(c *gin.Context) {
 	// 获取影片分类树信息
 	tree := logic.FL.GetFilmClassTree()
 	system.Success(tree, "影片分类信息获取成功", c)
-	return
 }
 
 // FindFilmClass 获取指定ID对应的影片分类信息

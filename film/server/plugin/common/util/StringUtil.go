@@ -84,7 +84,11 @@ func ParsePubKeyBytes(buf []byte) (*rsa.PublicKey, error) {
 
 // ValidDomain 域名校验(http://example.xxx)
 func ValidDomain(s string) bool {
-	return regexp.MustCompile(`^(http|https)://[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?$`).MatchString(s)
+	u, err := url.ParseRequestURI(s)
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https" || u.Host == "") {
+		return false
+	}
+	return true
 }
 
 // ValidIPHost 校验是否符合http|https//ip 格式
