@@ -8,6 +8,7 @@ export default function ScrollToTop() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    // 监听到路由或参数变化时，直接无脑瞬间滚回顶部，无论数据是否已加载
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname, searchParams]);
 

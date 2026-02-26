@@ -20,6 +20,7 @@ function ClassifyContent() {
   const fetchData = useCallback(async () => {
     if (!pid) return;
     setLoading(true);
+    setData(null);
     try {
       const resp = await ApiGet("/filmClassify", { Pid: pid });
       if (resp.code === 0) {

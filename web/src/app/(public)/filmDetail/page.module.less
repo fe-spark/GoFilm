@@ -27,11 +27,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-      circle at center,
-      transparent 0%,
-      rgba(10, 11, 16, 0.8) 100%
-    );
+    background: radial-gradient(circle at center,
+        transparent 0%,
+        rgba(10, 11, 16, 0.8) 100%);
   }
 }
 
@@ -161,6 +159,8 @@
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.65);
     font-weight: 400;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 }
 
@@ -241,9 +241,11 @@
     gap: 32px;
     padding: 32px;
   }
+
   .left {
     width: 240px;
   }
+
   .title {
     font-size: 36px;
   }
@@ -265,6 +267,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+
     .poster {
       width: 200px;
       border-radius: 16px;
@@ -284,6 +287,7 @@
   .meta {
     justify-content: center;
     gap: 8px;
+
     .metaItem {
       font-size: 12px;
       padding: 4px 12px;
@@ -293,6 +297,7 @@
   .actions {
     width: 100%;
     justify-content: center;
+
     .playBtn,
     .collectBtn {
       height: 52px;
@@ -304,6 +309,7 @@
 
   .intro {
     text-align: left;
+
     .descContent {
       font-size: 14px;
       -webkit-line-clamp: 5;

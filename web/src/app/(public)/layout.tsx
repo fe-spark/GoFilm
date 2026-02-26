@@ -1,10 +1,9 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Header from "@/components/public/Header";
 import Footer from "@/components/public/Footer";
-import ScrollToTop from "@/components/public/ScrollToTop";
 import styles from "./layout.module.less";
 
 export default function PublicLayout({
@@ -13,14 +12,15 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const fullKey = `${pathname}?${searchParams.toString()}`;
 
   return (
     <div className={styles.layoutWrapper}>
-      <ScrollToTop />
       <Suspense fallback={null}>
         <Header />
       </Suspense>
-      <main key={pathname} className={`${styles.publicMain} page-entry`}>
+      <main key={fullKey} className={`${styles.publicMain} page-entry`}>
         {children}
       </main>
       <Footer />

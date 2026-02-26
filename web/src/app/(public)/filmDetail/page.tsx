@@ -32,7 +32,7 @@ function FilmDetailContent() {
     if (raw) {
       try {
         historyMap = JSON.parse(raw);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     historyMap[detail.id] = {
@@ -70,10 +70,12 @@ function FilmDetailContent() {
           const detail = resp.data.detail;
           detail.name = detail.name.replace(/(～.*～)/g, "");
           if (detail.descriptor?.content) {
-            detail.descriptor.content = detail.descriptor.content.replace(
-              /(&.*;)|( )|(　　)|(\n)|(<[^>]+>)/g,
-              "",
-            );
+            let content = detail.descriptor.content;
+            content = content.replace(/<br\s*\/?>/gi, "\n");
+            content = content.replace(/<\/p>/gi, "\n");
+            content = content.replace(/(&.*;)|( )|(　　)|(<[^>]+>)/g, "");
+            content = content.replace(/\n+/g, "\n");
+            detail.descriptor.content = content.trim();
           }
           setData(resp.data);
           updateHistory(detail);
@@ -104,7 +106,7 @@ function FilmDetailContent() {
           router.push(savedState.link);
           return;
         }
-      } catch {}
+      } catch { }
     }
     // 否则默认播放由第一组数据源提供的第一集
     router.push(`/play?id=${link}&source=${detail.list[0].id}&episode=${0}`);
@@ -185,18 +187,9 @@ function FilmDetailContent() {
 
           <div className={styles.intro}>
             <h2 className={styles.sectionTitle}>简介</h2>
-            <div
-              className={styles.descContent}
-              dangerouslySetInnerHTML={{
-                __html: detail.descriptor.content
-                  ? detail.descriptor.content
-                      .replace(/<\/?p>/g, "")
-                      .replace(/<br\s*\/?>/gi, "")
-                      .replace(/&nbsp;/g, " ")
-                      .replace(/^[\s\u3000]+|[\s\u3000]+$/g, "")
-                  : "暂无简介",
-              }}
-            />
+            <div className={styles.descContent}>
+              {detail.descriptor.content || "暂无简介"}
+            </div>
           </div>
         </div>
       </div>

@@ -18,6 +18,7 @@ function ClassifySearchContent() {
 
   const fetchResults = useCallback(async () => {
     setLoading(true);
+    setData(null); // Explicitly clear old data to force complete unmount and natural top-scroll
     const params: any = {};
     searchParams.forEach((value, key) => {
       params[key] = value;
