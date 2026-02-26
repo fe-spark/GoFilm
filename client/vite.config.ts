@@ -1,55 +1,53 @@
-import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import {ElementPlusResolver} from "unplugin-vue-components/resolvers";
-
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 export default defineConfig({
-    // 本地测试环境
-    server: {
-        host: '0.0.0.0',
-        port: 3600,
-        proxy: {
-            "/api": {
-                target: `http://127.0.0.1:3601`,
-                // target: `http://113.44.5.201:3601`,
-                changeOrigin: true, // 允许跨域
-                rewrite: path => path.replace(/^\/api/, '')
-            }
-        },
+  // 本地测试环境
+  server: {
+    host: "0.0.0.0",
+    port: 3600,
+    proxy: {
+      "/api": {
+        target: `http://74.48.78.105:8080`,
+        // target: `http://113.44.5.201:3601`,
+        changeOrigin: true, // 允许跨域
+        // rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
+  },
 
-    // nginx发布构建时使用此配置
-    // server: {
-    //     host: 'localhost',
-    //     port: 3600,
-    //     proxy: {
-    //         "/api": {
-    //             target: `http://localhost`,
-    //             changeOrigin: true, // 允许跨域
-    //             rewrite: path => path.replace(/^\/api/,'')
-    //         }
-    //     },
-    // },
+  // nginx发布构建时使用此配置
+  // server: {
+  //     host: 'localhost',
+  //     port: 3600,
+  //     proxy: {
+  //         "/api": {
+  //             target: `http://localhost`,
+  //             changeOrigin: true, // 允许跨域
+  //             rewrite: path => path.replace(/^\/api/,'')
+  //         }
+  //     },
+  // },
 
-    plugins: [
-        vue(),
-        AutoImport({
-            resolvers: [ElementPlusResolver()],
-        }),
-        Components({
-            resolvers: [ElementPlusResolver()],
-        }),
-    ],
-    css: {devSourcemap: true},
-    build: {
-        terserOptions: {
-            compress: {
-                drop_console:true,
-                drop_debugger: true,
-            }
-        }
-    }
-
-})
+  plugins: [
+    vue(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
+  ],
+  css: { devSourcemap: true },
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+});

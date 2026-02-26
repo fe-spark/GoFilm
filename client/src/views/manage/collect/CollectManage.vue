@@ -3,78 +3,52 @@
     <el-table
       :data="data.siteList"
       style="width: 100%"
-      height="calc(100vh - 120px)"
       border
       size="default"
       :row-class-name="'cus-tr'"
       table-layout="auto"
     >
-      <el-table-column prop="name" label="资源名称" min-width="180">
+      <el-table-column prop="name" label="资源名称">
         <template #default="scope">
-          <div style="display: flex; align-items: center; white-space: nowrap">
-            <span
-              style="
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                max-width: 200px;
-              "
-              >{{ scope.row.name }}</span
-            >
-            <el-tag
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              white-space: nowrap;
+            "
+          >
+            <span>{{ scope.row.name }}</span>
+            <el-icon
               v-if="data.activeCollectIds.includes(scope.row.id)"
-              type="primary"
-              size="small"
-              style="
-                margin-left: 8px;
-                flex-shrink: 0;
-                display: inline-flex;
-                align-items: center;
-              "
-            >
-              <el-icon class="is-loading" style="margin-right: 4px"
-                ><Loading
-              /></el-icon>
-              <span>正在运行</span>
-            </el-tag>
+              class="is-loading"
+              color="#409eff"
+              style="flex-shrink: 0"
+              ><Loading
+            /></el-icon>
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="resultModel"
-        align="center"
-        label="数据类型"
-        width="100"
-      >
+      <el-table-column prop="resultModel" align="center" label="数据类型">
         <template #default="scope">
           <el-tag disable-transitions>{{
             scope.row.resultModel == 0 ? "JSON" : "XML"
           }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="collectType"
-        align="center"
-        label="资源类型"
-        width="100"
-      >
+      <el-table-column prop="collectType" align="center" label="资源类型">
         <template #default="scope">
           <el-tag disable-transitions>{{ scope.row.collectTypeText }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="uri" label="资源站" min-width="280">
+      <el-table-column prop="uri" label="资源站">
         <template #default="scope">
           <el-link :href="scope.row.uri" target="_blank">{{
             scope.row.uri
           }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="syncPictures"
-        align="center"
-        label="同步图片"
-        width="100"
-      >
+      <el-table-column prop="syncPictures" align="center" label="同步图片">
         <template #default="scope">
           <el-switch
             @change="changeSourceState(scope.row)"
@@ -86,7 +60,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="state" align="center" label="是否启用" width="100">
+      <el-table-column prop="state" align="center" label="是否启用">
         <template #default="scope">
           <el-switch
             @change="changeSourceState(scope.row)"
@@ -97,7 +71,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="grade" align="center" label="站点权重" width="100">
+      <el-table-column prop="grade" align="center" label="站点权重">
         <template #default="scope">
           <el-tag
             disable-transitions
@@ -107,14 +81,14 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="grade" align="center" label="采集间隔" width="100">
+      <el-table-column prop="grade" align="center" label="采集间隔">
         <template #default="scope">
           <el-tag disable-transitions type="success">
             {{ scope.row.interval > 0 ? `${scope.row.interval} ms` : `无限制` }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="采集方式" width="150">
+      <el-table-column label="采集方式" width="120">
         <template #default="scope">
           <el-select
             v-model="scope.row.cd"
@@ -131,59 +105,63 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="180" fixed="right">
+      <el-table-column label="操作" align="center" fixed="right">
         <template #default="scope">
-          <el-button
-            v-if="data.activeCollectIds.includes(scope.row.id)"
-            type="danger"
-            :icon="VideoPause"
-            plain
-            circle
-            @click="stopCollectTask(scope.row.id)"
-          />
-          <el-button
-            v-else
-            type="success"
-            :icon="SwitchButton"
-            plain
-            circle
-            @click="startTask(scope.row)"
-          />
-          <el-button
-            type="primary"
-            :icon="Edit"
-            plain
-            circle
-            @click="openEditDialog(scope.row.id)"
-          />
-          <el-button
-            type="danger"
-            :icon="Delete"
-            plain
-            circle
-            @click="delSourceSite(scope.row.id)"
-          />
+          <div style="white-space: nowrap">
+            <el-button
+              v-if="data.activeCollectIds.includes(scope.row.id)"
+              type="danger"
+              :icon="VideoPause"
+              plain
+              circle
+              @click="stopCollectTask(scope.row.id)"
+            />
+            <el-button
+              v-else
+              type="success"
+              :icon="SwitchButton"
+              plain
+              circle
+              @click="startTask(scope.row)"
+            />
+            <el-button
+              type="primary"
+              :icon="Edit"
+              plain
+              circle
+              @click="openEditDialog(scope.row.id)"
+            />
+            <el-button
+              type="danger"
+              :icon="Delete"
+              plain
+              circle
+              @click="delSourceSite(scope.row.id)"
+            />
+          </div>
         </template>
       </el-table-column>
     </el-table>
     <div class="cus_util">
-      <el-button color="#9b49e7" :icon="CirclePlus" @click="dialogV.addV = true"
+      <el-button type="primary" :icon="CirclePlus" @click="dialogV.addV = true"
         >添加采集站</el-button
       >
-      <el-button color="#d942bf" @click="openBatchCollect" :icon="Promotion"
+      <el-button type="success" @click="openBatchCollect" :icon="Promotion"
         >一键采集</el-button
       >
       <el-button
-        type="danger"
-        :icon="DeleteFilled"
-        @click="dialogV.clear = true"
-        >RemoveAll</el-button
-      >
-      <el-button
-        type="primary"
+        type="warning"
+        plain
         :icon="BellFilled"
         @click="dialogV.reCollect = true"
-        >ReCollect</el-button
+        >重新采集</el-button
+      >
+      <el-button
+        type="danger"
+        plain
+        :icon="DeleteFilled"
+        @click="dialogV.clear = true"
+        >清空数据</el-button
       >
     </div>
     <!--站点添加弹窗-->
