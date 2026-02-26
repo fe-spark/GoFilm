@@ -1,0 +1,316 @@
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.bgWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+
+  .bgPoster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(80px) brightness(0.25);
+    transform: scale(1.1);
+  }
+
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        circle at 50% 50%,
+        transparent 0%,
+        rgba(17, 21, 35, 0.8) 100%
+      ),
+      linear-gradient(to bottom, transparent 0%, #111523 100%);
+  }
+}
+
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+.playerWrapper {
+  width: 100%;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+  max-height: calc(100vh - 120px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.sideHeader {
+  margin-bottom: 24px;
+  .title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    &::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: #fa8c16;
+      border-radius: 2px;
+    }
+  }
+  .subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.sourceTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-x: auto;
+  position: relative;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    &.active {
+      background: #fa8c16;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(250, 140, 22, 0.3);
+    }
+  }
+}
+
+.episodeList {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  display: grid;
+  // 关键：调优最小列宽为 110px，确保在窄侧边栏下平稳容纳 2 列
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  align-content: flex-start;
+  gap: 8px;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  .epItem {
+    height: 38px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+    &:hover {
+      border-color: #fa8c16;
+      color: #fa8c16;
+      background: rgba(250, 140, 22, 0.05);
+    }
+    &.active {
+      background: #fa8c16;
+      color: #fff;
+      border-color: #fa8c16;
+      box-shadow: 0 4px 12px rgba(250, 140, 22, 0.4);
+    }
+  }
+}
+
+.sideFooter {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  .footerBtn {
+    flex: 1;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    &.active {
+      color: #fa8c16;
+      background: rgba(250, 140, 22, 0.1);
+    }
+  }
+}
+
+.infoArea {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 24px;
+  padding: 32px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+
+  .filmTitle {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: #fff;
+    letter-spacing: -0.5px;
+    a:hover {
+      color: #fa8c16;
+    }
+  }
+
+  .meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+    span.active {
+      color: #fa8c16;
+    }
+  }
+
+  .intro {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.35);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 24px;
+  }
+}
+
+.recommendation {
+  .sectionTitle {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
+  }
+}
+
+/* 核心修复点：回归 FilmList 组件基础样式，本文件仅做容器对齐 */
+.classifyGrid {
+  width: 100%;
+}
+
+// Responsive Logic
+@media (max-width: 1440px) {
+  /* 已经在 FilmList/index.module.less 中同步处理列数 */
+}
+
+@media (max-width: 1200px) {
+  /* 提前折叠断点：解决中屏下左右布局过窄的问题 */
+  .mainContent {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .sidebar {
+    height: auto;
+    min-height: 400px;
+    max-height: 600px;
+  }
+  .infoArea {
+    padding: 24px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0 24px 0;
+    gap: 32px;
+  }
+  .playerWrapper {
+    border-radius: 0;
+    border: none;
+  }
+  .mainContent {
+    gap: 0;
+  }
+  .sidebar {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px 16px;
+  }
+  .infoArea {
+    border-radius: 0;
+    border: none;
+    padding: 24px 16px;
+    background: none;
+  }
+  .recommendation {
+    padding: 0 16px;
+  }
+}

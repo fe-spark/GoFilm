@@ -1,0 +1,262 @@
+.content {
+  display: grid;
+  // 大屏基准：固定 6 列
+  grid-template-columns: repeat(
+    6,
+    minmax(0, 1fr)
+  ); /* 关键：使用 minmax(0, 1fr) 防止内容撑开 */
+  gap: 24px;
+  width: 100%;
+}
+
+.item {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform;
+  min-width: 0; /* 关键：允许单元格在 Grid 轨道缩小时同步缩小 */
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+
+    .posterWrapper {
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(250, 140, 22, 0.3);
+      .poster {
+        transform: scale(1.1);
+      }
+      .overlay {
+        opacity: 1;
+        visibility: visible;
+        .overlayContent {
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .name {
+      color: #fa8c16;
+      text-shadow: 0 0 10px rgba(250, 140, 22, 0.3);
+    }
+  }
+}
+
+.posterWrapper {
+  position: relative;
+  aspect-ratio: 3 / 4.2;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #14151b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  .poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+}
+
+.remark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(250, 140, 22, 0.85);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tagGroup {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  transition: opacity 0.3s ease;
+
+  .tag {
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(10, 11, 16, 0.98) 0%,
+    rgba(10, 11, 16, 0.8) 50%,
+    rgba(10, 11, 16, 0.4) 100%
+  );
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: 5;
+
+  .overlayContent {
+    width: 100%;
+    transform: translateY(20px);
+    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) 0.1s;
+  }
+
+  .overlayTitle {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .overlayMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 16px;
+
+    .dot {
+      color: #fa8c16;
+      font-weight: 900;
+    }
+  }
+
+  .overlayBlurb {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  :global(.ant-btn-primary.playBtn) {
+    height: 40px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    background: #fa8c16 !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(250, 140, 22, 0.4) !important;
+
+    &:hover {
+      background: #ffa940 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(250, 140, 22, 0.5) !important;
+    }
+  }
+}
+
+.infoLine {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 4px;
+  overflow: hidden; /* 防止文字溢出 */
+
+  .name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+  }
+
+  .subText {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// 响应式设计：随屏幕缩小逐步分档减少列数
+@media (max-width: 1440px) {
+  .content {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .content {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .overlay {
+    display: none;
+  }
+
+  .item {
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .posterWrapper {
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  .infoLine {
+    .name {
+      font-size: 13px;
+    }
+    .subText {
+      font-size: 11px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}

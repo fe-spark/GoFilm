@@ -1,0 +1,227 @@
+"use client";
+
+import React, { useState, useEffect, Suspense, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button, Spin, Space } from "antd";
+import {
+  CaretRightOutlined,
+  RocketOutlined,
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+} from "@ant-design/icons";
+import { ApiGet } from "@/lib/api";
+import { cookieUtil, COOKIE_KEY_MAP } from "@/lib/cookie";
+import FilmList from "@/components/public/FilmList";
+import styles from "./page.module.less";
+import { useAppMessage } from "@/lib/useAppMessage";
+
+import { FALLBACK_IMG } from "@/lib/fallbackImg";
+
+function FilmDetailContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { message } = useAppMessage();
+  const link = searchParams.get("link");
+
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const updateHistory = useCallback((detail: any) => {
+    const raw = cookieUtil.getCookie(COOKIE_KEY_MAP.FILM_HISTORY);
+    let historyMap: any = {};
+    if (raw) {
+      try {
+        historyMap = JSON.parse(raw);
+      } catch (e) {}
+    }
+
+    historyMap[detail.id] = {
+      id: detail.id,
+      name: detail.name,
+      episode: detail.descriptor.remarks || "查看详情",
+      link: `/filmDetail?link=${detail.id}`,
+      timeStamp: Date.now(),
+    };
+
+    // 限制历史记录数量为 50 条
+    const keys = Object.keys(historyMap);
+    if (keys.length > 50) {
+      const sortedKeys = keys.sort(
+        (a, b) => historyMap[b].timeStamp - historyMap[a].timeStamp,
+      );
+      const toDelete = sortedKeys.slice(50);
+      toDelete.forEach((k) => delete historyMap[k]);
+    }
+
+    cookieUtil.setCookie(
+      COOKIE_KEY_MAP.FILM_HISTORY,
+      JSON.stringify(historyMap),
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!link) return;
+
+    const load = async () => {
+      setLoading(true);
+      try {
+        const resp = await ApiGet("/filmDetail", { id: link });
+        if (resp.code === 0) {
+          const detail = resp.data.detail;
+          detail.name = detail.name.replace(/(～.*～)/g, "");
+          if (detail.descriptor?.content) {
+            detail.descriptor.content = detail.descriptor.content.replace(
+              /(&.*;)|( )|(　　)|(\n)|(<[^>]+>)/g,
+              "",
+            );
+          }
+          setData(resp.data);
+          updateHistory(detail);
+        } else {
+          message.error(resp.msg);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void load();
+  }, [link, message, updateHistory]);
+
+  const handlePlayClick = () => {
+    // 尝试从历史中获取播放进度
+    const raw = cookieUtil.getCookie(COOKIE_KEY_MAP.FILM_HISTORY);
+    if (raw) {
+      try {
+        const historyMap = JSON.parse(raw);
+        const savedState = historyMap[detail.id];
+        // 如果历史中存在播放页面的完整路由记录，直接跳转续播
+        if (
+          savedState &&
+          savedState.link &&
+          savedState.link.includes("/play")
+        ) {
+          router.push(savedState.link);
+          return;
+        }
+      } catch {}
+    }
+    // 否则默认播放由第一组数据源提供的第一集
+    router.push(`/play?id=${link}&source=${detail.list[0].id}&episode=${0}`);
+  };
+
+  if (loading) {
+    return (
+      <div style={{ padding: "100px 0", textAlign: "center" }}>
+        <Spin size="large" description="正在加载影片详情..." />
+      </div>
+    );
+  }
+
+  if (!data) return null;
+
+  const { detail, relate } = data;
+
+  return (
+    <div className={styles.container}>
+      {/* Background Layer */}
+      <div className={styles.bgWrapper}>
+        <div
+          className={styles.bgPoster}
+          style={{ backgroundImage: `url(${detail.picture})` }}
+        />
+        <div className={styles.bgMask} />
+      </div>
+
+      <div className={styles.content}>
+        <div className={styles.left}>
+          <img
+            src={detail.picture || FALLBACK_IMG}
+            className={styles.poster}
+            alt={detail.name}
+          />
+        </div>
+
+        <div className={styles.right}>
+          <h1 className={styles.title}>{detail.name}</h1>
+
+          <div className={styles.meta}>
+            {detail.descriptor.cName && (
+              <span className={styles.metaItem}>{detail.descriptor.cName}</span>
+            )}
+            {detail.descriptor.classTag
+              ?.split(",")
+              .filter((t: string) => t.trim())
+              .map((t: string, i: number) => (
+                <span key={i} className={styles.metaItem}>
+                  {t}
+                </span>
+              ))}
+            {detail.descriptor.year && (
+              <span className={styles.metaItem}>{detail.descriptor.year}</span>
+            )}
+            {detail.descriptor.area && (
+              <span className={styles.metaItem}>{detail.descriptor.area}</span>
+            )}
+          </div>
+
+          <div className={styles.actions}>
+            <Button
+              type="primary"
+              className={styles.playBtn}
+              icon={<CaretRightOutlined />}
+              onClick={handlePlayClick}
+            >
+              立即播放
+            </Button>
+            <Button
+              className={styles.collectBtn}
+              icon={<RocketOutlined />}
+              onClick={() => message.info("功能开发中...")}
+            >
+              收藏
+            </Button>
+          </div>
+
+          <div className={styles.intro}>
+            <h2 className={styles.sectionTitle}>简介</h2>
+            <div
+              className={styles.descContent}
+              dangerouslySetInnerHTML={{
+                __html: detail.descriptor.content
+                  ? detail.descriptor.content
+                      .replace(/<\/?p>/g, "")
+                      .replace(/<br\s*\/?>/gi, "")
+                      .replace(/&nbsp;/g, " ")
+                      .replace(/^[\s\u3000]+|[\s\u3000]+$/g, "")
+                  : "暂无简介",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Recommendations */}
+      <div className={styles.recommendation}>
+        <h2 className={styles.sectionTitle} style={{ marginBottom: 24 }}>
+          相关推荐
+        </h2>
+        <FilmList list={relate} className={styles.classifyGrid} />
+      </div>
+    </div>
+  );
+}
+
+export default function FilmDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div style={{ padding: "100px 0", textAlign: "center" }}>
+          <Spin size="large" />
+        </div>
+      }
+    >
+      <FilmDetailContent />
+    </Suspense>
+  );
+}
