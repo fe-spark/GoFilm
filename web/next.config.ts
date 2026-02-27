@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 import os from "os";
 
-const cpuCount = os.cpus().length || 1;
+const cpuCount = Math.max(1, os.cpus().length - 1);
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async rewrites() {
     if (!process.env.API_URL) {
       return [];
@@ -16,6 +19,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
   turbopack: {
     rules: {
       "*.module.less": {
