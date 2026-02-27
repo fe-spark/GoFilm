@@ -1,7 +1,7 @@
 .layoutWrapper {
   background: var(--bg-dark);
   color: var(--text-main);
-  min-height: 100vh;
+  min-height: 100vh; // Ensure it takes at least the full viewport height
   display: flex;
   flex-direction: column;
 }
@@ -11,8 +11,7 @@
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 100px 40px 0; // Extra top padding for fixed header
-  min-height: calc(100vh - 80px);
+  padding: 80px 40px 40px; // Top padding matches sticky header spacing
 }
 
 @media (max-width: 768px) {

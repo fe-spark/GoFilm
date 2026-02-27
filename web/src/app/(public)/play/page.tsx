@@ -193,19 +193,55 @@ function PlayerContent() {
       </div>
 
       <div className={styles.mainContent}>
-        {/* Left: Player Area */}
-        <div className={styles.playerWrapper}>
-          {current?.link && (
-            <VideoPlayer
-              key={current.link}
-              src={current.link}
-              initialTime={initialTime ? parseFloat(initialTime) : 0}
-              autoplay={autoplay}
-              onEnded={handleEnded}
-              onTimeUpdate={handleTimeUpdate}
-              onError={handleError}
-            />
-          )}
+        {/* Left Column: Info Card + Player Area */}
+        <div className={styles.leftColumn}>
+          {/* Top Info Card */}
+          <div className={styles.topInfoCard}>
+            <div className={styles.leftSection}>
+              <h1 className={styles.filmTitle}>
+                <a
+                  onClick={() => router.push(`/filmDetail?link=${detail.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {detail.name}
+                </a>
+              </h1>
+              <div className={styles.meta}>
+                <span className={styles.active}>
+                  {detail.descriptor.remarks}
+                </span>
+                <span>|</span>
+                <span>{detail.descriptor.cName}</span>
+                <span>|</span>
+                <span>{detail.descriptor.year}</span>
+                <span>|</span>
+                <span>{detail.descriptor.area}</span>
+              </div>
+            </div>
+            <div className={styles.rightSection}>
+              <div className={styles.extraInfo}>
+                <div className={styles.scoreLabel}>综合评分</div>
+                <div className={styles.scoreValue}>
+                  {detail.descriptor.score || "9.0"}
+                  <span>分</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.playerWrapper}>
+            {current?.link && (
+              <VideoPlayer
+                key={current.link}
+                src={current.link}
+                initialTime={initialTime ? parseFloat(initialTime) : 0}
+                autoplay={autoplay}
+                onEnded={handleEnded}
+                onTimeUpdate={handleTimeUpdate}
+                onError={handleError}
+              />
+            )}
+          </div>
         </div>
 
         {/* Right: Sidebar Episode List */}
@@ -298,25 +334,9 @@ function PlayerContent() {
         </div>
       </div>
 
-      {/* Bottom: Info Area */}
+      {/* Bottom: Info Area (Intro Only) */}
       <div className={styles.infoArea}>
-        <h1 className={styles.filmTitle}>
-          <a
-            onClick={() => router.push(`/filmDetail?link=${detail.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-            {detail.name}
-          </a>
-        </h1>
-        <div className={styles.meta}>
-          <span className={styles.active}>{detail.descriptor.remarks}</span>
-          <span>|</span>
-          <span>{detail.descriptor.cName}</span>
-          <span>|</span>
-          <span>{detail.descriptor.year}</span>
-          <span>|</span>
-          <span>{detail.descriptor.area}</span>
-        </div>
+        <div className={styles.introHeading}>剧情简介</div>
         <div
           className={styles.intro}
           dangerouslySetInnerHTML={{

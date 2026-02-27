@@ -1,8 +1,8 @@
 .content {
   display: grid;
-  // 大屏基准：固定 6 列
+  // 大屏基准：固定 7 列
   grid-template-columns: repeat(
-    6,
+    7,
     minmax(0, 1fr)
   ); /* 关键：使用 minmax(0, 1fr) 防止内容撑开 */
   gap: 24px;
@@ -211,14 +211,14 @@
 // 响应式设计：随屏幕缩小逐步分档减少列数
 @media (max-width: 1440px) {
   .content {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 20px;
   }
 }
 
 @media (max-width: 1200px) {
   .content {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 16px;
   }
 }

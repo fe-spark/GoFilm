@@ -216,7 +216,10 @@ export default function HomePage() {
 
             <div className={styles.sectionBody}>
               <div className={styles.filmGrid}>
-                <FilmList list={section.movies.slice(0, 12)} />
+                <FilmList
+                  list={section.movies.slice(0, 14)}
+                  className={styles.homeList}
+                />
               </div>
 
               {/* Sidebar Hot List */}

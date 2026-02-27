@@ -47,7 +47,8 @@ export default function Header() {
   // 监听滚动
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      setScrolled(scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);

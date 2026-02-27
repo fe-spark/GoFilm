@@ -20,9 +20,7 @@ export default function PublicLayout({
       <Suspense fallback={null}>
         <Header />
       </Suspense>
-      <main key={fullKey} className={`${styles.publicMain} page-entry`}>
-        {children}
-      </main>
+      <main className={`${styles.publicMain} page-entry`}>{children}</main>
       <Footer />
     </div>
   );

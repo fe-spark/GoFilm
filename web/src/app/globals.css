@@ -180,8 +180,12 @@ a {
   box-shadow: 0 6px 16px rgba(250, 140, 22, 0.4);
 }
 
-.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis,
-.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis {
+.ant-pagination-jump-prev
+  .ant-pagination-item-container
+  .ant-pagination-item-ellipsis,
+.ant-pagination-jump-next
+  .ant-pagination-item-container
+  .ant-pagination-item-ellipsis {
   color: rgba(255, 255, 255, 0.6) !important;
   font-size: 18px !important;
   letter-spacing: 2px !important;

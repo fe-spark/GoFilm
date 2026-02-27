@@ -1,15 +1,10 @@
 .playerWrapper {
   width: 100%;
   height: 100%;
-  flex: 1;
-  min-height: 0;
   background: #000;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .errorOverlay {
@@ -52,6 +47,7 @@
 .playerWrapper :global(.art-video-player) {
   border-radius: 20px;
   overflow: hidden;
+  height: 100% !important;
 }
 
 .playerWrapper :global(.artplayer-app) {

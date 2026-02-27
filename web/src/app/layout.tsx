@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { App, ConfigProvider, theme } from "antd";
 import { Outfit } from "next/font/google";
-import ScrollToTop from "@/components/public/ScrollToTop";
 import "./globals.css";
-
-
 const outfit = Outfit({
   subsets: ["latin"],
   display: "swap",
@@ -55,10 +52,7 @@ export default function RootLayout({
               },
             }}
           >
-            <App>
-              <ScrollToTop />
-              {children}
-            </App>
+            <App>{children}</App>
           </ConfigProvider>
         </AntdRegistry>
       </body>
