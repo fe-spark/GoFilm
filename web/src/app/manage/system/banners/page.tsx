@@ -235,9 +235,9 @@ export default function BannersPage() {
     {
       title: "操作",
       key: "action",
-      align: "center",
+      align: "center" as const,
       width: 140,
-      fixed: "right",
+      fixed: "right" as const,
       render: (_: any, record: any) => (
         <Space>
           <Tooltip title="绑定影片">

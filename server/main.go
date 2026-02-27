@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
+	"os"
 	"time"
 
 	"server/config"
@@ -13,6 +15,11 @@ import (
 )
 
 func init() {
+	// 健康检查模式：不初始化数据库，直接探测端口
+	if len(os.Args) > 1 && os.Args[1] == "-health" {
+		return
+	}
+
 	// 等待 Redis 就绪（最多重试 30 次，每次间隔 2s）
 	if err := waitForRedis(30, 2*time.Second); err != nil {
 		panic(err)
@@ -52,6 +59,15 @@ func waitForMySQL(maxRetries int, interval time.Duration) error {
 }
 
 func main() {
+	// 健康检查模式
+	if len(os.Args) > 1 && os.Args[1] == "-health" {
+		resp, err := http.Get(fmt.Sprintf("http://localhost:%s/index", config.ListenerPort))
+		if err != nil || resp.StatusCode != 200 {
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
 	start()
 }
 
