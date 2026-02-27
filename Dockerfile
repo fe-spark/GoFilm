@@ -8,9 +8,6 @@ ENV GO111MODULE=on \
     GOARCH=amd64 \
     TZ=Asia/Shanghai
 
-ARG GOPROXY=https://proxy.golang.org,direct
-ENV GOPROXY=${GOPROXY}
-
 RUN apk add --no-cache ca-certificates tzdata
 
 WORKDIR /app
