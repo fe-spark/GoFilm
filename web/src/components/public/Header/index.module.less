@@ -56,12 +56,13 @@
 .searchGroup {
   display: flex;
   align-items: center;
-  max-width: 360px;
+  max-width: 480px;
+  min-width: 420px;
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 2px;
+  border-radius: 12px;
+  padding: 3px;
   transition: all 0.3s ease;
   overflow: hidden;
 
@@ -78,31 +79,32 @@
   :global(.ant-input-affix-wrapper) {
     background: transparent !important;
     color: #fff !important;
-    height: 32px;
-    font-size: 14px;
+    height: 40px;
+    font-size: 15px;
     border: none !important;
     box-shadow: none !important;
     flex: 1;
+    padding-left: 10px;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.25) !important;
+      color: rgba(255, 255, 255, 0.35) !important;
     }
   }
 
   .searchBtn {
-    height: 32px;
-    border-radius: 6px !important;
-    font-weight: 500;
-    font-size: 13px;
-    padding: 0 16px;
+    height: 40px;
+    border-radius: 9px !important;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     border: none !important;
     box-shadow: none !important;
 
     :global(.anticon) {
-      font-size: 14px;
+      font-size: 15px;
     }
   }
 }
