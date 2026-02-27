@@ -38,8 +38,6 @@ export default function FilmList({ list, className }: FilmListProps) {
   }
 
   const handleToDetail = (id: string) => {
-    // 强制先归零滚动条，再触发 Next.js 软路由
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     router.push(`/filmDetail?link=${id}`);
   };
 
