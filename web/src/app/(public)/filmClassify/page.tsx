@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Spin } from "antd";
 import { ApiGet } from "@/lib/api";
 import FilmList from "@/components/public/FilmList";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 
@@ -38,11 +38,7 @@ function ClassifyContent() {
   }, [fetchData]);
 
   if (loading) {
-    return (
-      <div style={{ padding: "100px 0", textAlign: "center" }}>
-        <Spin size="large" />
-      </div>
-    );
+    return <AppLoading />;
   }
 
   if (!data) return null;
@@ -92,13 +88,7 @@ function ClassifyContent() {
 
 export default function FilmClassifyPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "100px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
-      }
-    >
+    <Suspense fallback={<AppLoading />}>
       <ClassifyContent />
     </Suspense>
   );

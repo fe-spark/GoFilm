@@ -36,7 +36,6 @@ export default function Header() {
   const searchParams = useSearchParams();
   const { message } = useAppMessage();
 
-  // 渲染期派生状态：用 useState 记录上一个 URL search 参数值，渲染期对比并同步（React 官方文档推荐的 getDerivedStateFromProps 替代方案）
   const urlSearch = searchParams.get("search") || "";
   const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
   if (prevUrlSearch !== urlSearch) {
@@ -44,7 +43,6 @@ export default function Header() {
     setKeyword(urlSearch);
   }
 
-  // 监听滚动
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
@@ -54,7 +52,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 获取站点和导航信息
   useEffect(() => {
     ApiGet("/navCategory").then((resp) => {
       if (resp.code === 0) setNavList(resp.data || []);
@@ -64,7 +61,6 @@ export default function Header() {
     });
   }, []);
 
-  // 加载观看历史
   const loadHistory = useCallback(() => {
     const raw = cookieUtil.getCookie(COOKIE_KEY_MAP.FILM_HISTORY);
     if (raw) {
@@ -97,7 +93,7 @@ export default function Header() {
   };
 
   const historyContent = (
-    <div className={styles.historyPopover}>
+    <div className={styles.historyPanel}>
       <div className={styles.historyHeader}>
         <HistoryOutlined className={styles.icon} />
         <span className={styles.title}>历史观看记录</span>
@@ -134,7 +130,6 @@ export default function Header() {
   return (
     <div className={`${styles.headerWrap} ${scrolled ? styles.scrolled : ""}`}>
       <div className={styles.headerInner}>
-        {/* PC Left: Logo & Search */}
         <div className={styles.left}>
           {siteInfo.siteName && (
             <div className={styles.siteName} onClick={() => router.push("/")}>
@@ -160,7 +155,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Right Navigation */}
         <div className={styles.right}>
           <div className={styles.navLinks}>
             <a onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
@@ -182,7 +176,27 @@ export default function Header() {
             trigger="hover"
             placement="bottomRight"
             onOpenChange={(open) => open && loadHistory()}
-            overlayClassName={styles.historyPopover}
+            arrow={false}
+            classNames={{ root: styles.historyOverlay }}
+            styles={{
+              root: {
+                backdropFilter: "blur(28px) saturate(170%)",
+                WebkitBackdropFilter: "blur(28px) saturate(170%)",
+                borderRadius: 14,
+                overflow: "hidden",
+              } as React.CSSProperties,
+              container: {
+                padding: 0,
+                background: "rgba(18, 22, 32, 0.38)",
+                border: "1px solid var(--public-border-2)",
+                boxShadow: "var(--public-shadow-md)",
+                borderRadius: 14,
+                overflow: "hidden",
+              },
+              content: {
+                padding: 0,
+              },
+            }}
           >
             <div className={styles.historyBtn}>
               <HistoryOutlined />

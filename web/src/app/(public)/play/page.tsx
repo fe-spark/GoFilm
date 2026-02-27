@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Spin } from "antd";
+import { Button } from "antd";
 import {
   RocketOutlined,
   StepForwardOutlined,
@@ -18,6 +18,7 @@ import { ApiGet } from "@/lib/api";
 import { cookieUtil, COOKIE_KEY_MAP } from "@/lib/cookie";
 import FilmList from "@/components/public/FilmList";
 import VideoPlayer from "@/components/public/VideoPlayer";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 
@@ -40,6 +41,8 @@ function PlayerContent() {
   const activeTabRef = useRef<HTMLDivElement>(null);
   const sourceTabsRef = useRef<HTMLDivElement>(null);
   const episodeListRef = useRef<HTMLDivElement>(null);
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   // 1. 初始化数据
   useEffect(() => {
@@ -65,6 +68,20 @@ function PlayerContent() {
 
     void load();
   }, [id, sourceId, episodeIdx, message]);
+
+  // 让 sidebar 最大高度跟随左列
+  useEffect(() => {
+    const leftEl = leftColumnRef.current;
+    const sideEl = sidebarRef.current;
+    if (!leftEl || !sideEl) return;
+    const sync = () => {
+      sideEl.style.maxHeight = `${leftEl.offsetHeight}px`;
+    };
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(leftEl);
+    return () => ro.disconnect();
+  }, [data]);
 
   // 自动滚动：使当前选中集数纵向居中（局部滚动，不干扰窗口）
   useEffect(() => {
@@ -156,23 +173,7 @@ function PlayerContent() {
   };
 
   if (loading) {
-    return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: "16px",
-        }}
-      >
-        <Spin size="large" />
-        <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "14px" }}>
-          正在加载播放资源...
-        </div>
-      </div>
-    );
+    return <AppLoading text="正在加载播放资源..." />;
   }
 
   const { detail, relate } = data;
@@ -194,7 +195,7 @@ function PlayerContent() {
 
       <div className={styles.mainContent}>
         {/* Left Column: Info Card + Player Area */}
-        <div className={styles.leftColumn}>
+        <div className={styles.leftColumn} ref={leftColumnRef}>
           {/* Top Info Card */}
           <div className={styles.topInfoCard}>
             <div className={styles.leftSection}>
@@ -245,7 +246,7 @@ function PlayerContent() {
         </div>
 
         {/* Right: Sidebar Episode List */}
-        <div className={styles.sidebar}>
+        <div className={styles.sidebar} ref={sidebarRef}>
           <div className={styles.sideHeader}>
             <div className={styles.title}>正在播放</div>
             <div className={styles.subtitle}>
@@ -362,13 +363,7 @@ function PlayerContent() {
 
 export default function PlayPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "100px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
-      }
-    >
+    <Suspense fallback={<AppLoading />}>
       <PlayerContent />
     </Suspense>
   );

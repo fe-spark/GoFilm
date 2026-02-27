@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Spin, Pagination } from "antd";
+import { Pagination } from "antd";
 import { ApiGet } from "@/lib/api";
 import FilmList from "@/components/public/FilmList";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 
@@ -53,11 +54,7 @@ function ClassifySearchContent() {
   };
 
   if (loading && !data) {
-    return (
-      <div style={{ padding: "100px 0", textAlign: "center" }}>
-        <Spin size="large" />
-      </div>
-    );
+    return <AppLoading />;
   }
 
   if (!data) return null;
@@ -115,13 +112,7 @@ function ClassifySearchContent() {
 
 export default function FilmClassifySearchPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "100px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
-      }
-    >
+    <Suspense fallback={<AppLoading />}>
       <ClassifySearchContent />
     </Suspense>
   );

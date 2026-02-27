@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Spin, Space } from "antd";
+import { Button, Space } from "antd";
 import {
   CaretRightOutlined,
   RocketOutlined,
@@ -12,6 +12,7 @@ import {
 import { ApiGet } from "@/lib/api";
 import { cookieUtil, COOKIE_KEY_MAP } from "@/lib/cookie";
 import FilmList from "@/components/public/FilmList";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 
@@ -113,11 +114,7 @@ function FilmDetailContent() {
   };
 
   if (loading) {
-    return (
-      <div style={{ padding: "100px 0", textAlign: "center" }}>
-        <Spin size="large" description="正在加载影片详情..." />
-      </div>
-    );
+    return <AppLoading text="正在加载影片详情..." />;
   }
 
   if (!data) return null;
@@ -207,13 +204,7 @@ function FilmDetailContent() {
 
 export default function FilmDetailPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "100px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
-      }
-    >
+    <Suspense fallback={<AppLoading />}>
       <FilmDetailContent />
     </Suspense>
   );

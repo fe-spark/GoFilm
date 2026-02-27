@@ -6,8 +6,6 @@ import {
   Layout,
   Menu,
   Avatar,
-  theme,
-  ConfigProvider,
   Button,
   Space,
   Tooltip,
@@ -20,7 +18,6 @@ import {
   FolderOpenOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  BulbOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -82,22 +79,9 @@ export default function ManageLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [siteName, setSiteName] = useState("Bracket");
   const [logo, setLogo] = useState("");
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("manage-theme");
-      return savedTheme !== null ? savedTheme === "dark" : true;
-    }
-    return true;
-  });
 
   const router = useRouter();
   const pathname = usePathname();
-
-  const toggleTheme = () => {
-    const nextTheme = !isDark;
-    setIsDark(nextTheme);
-    localStorage.setItem("manage-theme", nextTheme ? "dark" : "light");
-  };
 
   useEffect(() => {
     ApiGet("/manage/config/basic").then((resp) => {
@@ -129,92 +113,54 @@ export default function ManageLayout({
     )
     .map((item: any) => item.key);
 
-  const lightThemeToken = {
-    colorPrimary: "#4f7fdf",
-    colorPrimaryHover: "#648fe6",
-    colorPrimaryActive: "#3d6fcf",
-    colorInfo: "#4f7fdf",
-  };
-
-  const lightComponents = {
-    Menu: {
-      itemSelectedBg: "#eef3ff",
-      itemHoverBg: "#f6f8ff",
-    },
-    Button: {
-      primaryShadow: "0 4px 10px rgba(79, 127, 223, 0.16)",
-    },
-  };
-
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-        token: isDark ? undefined : lightThemeToken,
-        components: {
-          Pagination: {
-            itemSize: 32,
-          },
-          ...(isDark ? {} : lightComponents),
-        },
-      }}
-    >
-      <Layout style={{ minHeight: "100vh" }}>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={collapsed}
-          className={styles.sider}
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        className={styles.sider}
+      >
+        <div
+          className={styles.logoWrap}
+          onClick={() => window.open("/", "_blank")}
         >
-          <div
-            className={styles.logoWrap}
-            onClick={() => window.open("/", "_blank")}
-          >
-            {logo && <Avatar src={logo} size={30} />}
-            {!collapsed && <span className={styles.siteName}>{siteName}</span>}
-          </div>
-          <Menu
-            mode="inline"
-            selectedKeys={[pathname]}
-            defaultOpenKeys={openKeys}
-            items={menuItems}
-            onClick={onMenuClick}
-          />
-        </Sider>
-        <Layout>
-          <Header className={styles.header}>
-            <Space size="middle">
+          {logo && <Avatar src={logo} size={30} />}
+          {!collapsed && <span className={styles.siteName}>{siteName}</span>}
+        </div>
+        <Menu
+          mode="inline"
+          selectedKeys={[pathname]}
+          defaultOpenKeys={openKeys}
+          items={menuItems}
+          onClick={onMenuClick}
+        />
+      </Sider>
+      <Layout>
+        <Header className={styles.header}>
+          <Space size="middle">
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              className={styles.headerIconBtn}
+            />
+            <span className={styles.headerTitle}>后台管理中心</span>
+          </Space>
+
+          <Space size="small">
+            <Tooltip title="退出登录">
               <Button
                 type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
+                icon={<LogoutOutlined style={{ fontSize: 18 }} />}
+                onClick={handleLogout}
                 className={styles.headerIconBtn}
               />
-              <span className={styles.headerTitle}>后台管理中心</span>
-            </Space>
-
-            <Space size="small">
-              <Tooltip title={isDark ? "切换至浅色模式" : "切换至深色模式"}>
-                <Button
-                  type="text"
-                  icon={<BulbOutlined style={{ fontSize: 18 }} />}
-                  onClick={toggleTheme}
-                  className={`${styles.headerIconBtn} ${!isDark ? styles.themeActive : ""}`}
-                />
-              </Tooltip>
-              <Tooltip title="退出登录">
-                <Button
-                  type="text"
-                  icon={<LogoutOutlined style={{ fontSize: 18 }} />}
-                  onClick={handleLogout}
-                  className={styles.headerIconBtn}
-                />
-              </Tooltip>
-            </Space>
-          </Header>
-          <Content className={styles.content}>{children}</Content>
-        </Layout>
+            </Tooltip>
+          </Space>
+        </Header>
+        <Content className={styles.content}>{children}</Content>
       </Layout>
-    </ConfigProvider>
+    </Layout>
   );
 }

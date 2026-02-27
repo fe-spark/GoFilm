@@ -8,9 +8,10 @@ import React, {
   Suspense,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button, Spin, Pagination, Empty } from "antd";
+import { Button, Pagination, Empty } from "antd";
 import { SearchOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { ApiGet } from "@/lib/api";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 import { FALLBACK_IMG } from "@/lib/fallbackImg";
@@ -88,9 +89,7 @@ function SearchContent() {
       </div>
 
       {loading ? (
-        <div style={{ padding: "60px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
+        <AppLoading padding="60px 0" />
       ) : data && data.list?.length > 0 ? (
         <div className={styles.searchRes}>
           <div className={styles.resultHeader}>
@@ -177,13 +176,7 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "100px 0", textAlign: "center" }}>
-          <Spin size="large" />
-        </div>
-      }
-    >
+    <Suspense fallback={<AppLoading />}>
       <SearchContent />
     </Suspense>
   );

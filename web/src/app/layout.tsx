@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { App, ConfigProvider, theme } from "antd";
 import { Outfit } from "next/font/google";
+import GlobalThemeProvider from "@/components/theme/GlobalThemeProvider";
 import "./globals.css";
 const outfit = Outfit({
   subsets: ["latin"],
@@ -51,49 +51,9 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body className={outfit.className}>
         <AntdRegistry>
-          <ConfigProvider
-            theme={{
-              algorithm: theme.darkAlgorithm,
-              token: {
-                colorPrimary: "#fa8c16",
-                borderRadius: 12,
-                fontFamily: outfit.style.fontFamily,
-              },
-              components: {
-                Button: {
-                  controlHeightLG: 52,
-                  fontWeight: 600,
-                  borderRadiusLG: 14,
-                  boxShadow: "none",
-                  boxShadowSecondary: "none",
-                  boxShadowTertiary: "none",
-                },
-                Input: {
-                  controlHeight: 40,
-                  borderRadius: 10,
-                },
-                Popover: {
-                  colorBgElevated: "#14151b",
-                  colorText: "rgba(255, 255, 255, 0.85)",
-                  colorTextHeading: "#ffffff",
-                },
-                Pagination: {
-                  itemSize: 50,
-                  itemBg: "rgba(255, 255, 255, 0.08)",
-                  colorPrimary: "#fa8c16",
-                  colorText: "rgba(255, 255, 255, 0.95)",
-                  colorBgContainer: "rgba(255, 255, 255, 0.1)",
-                  colorTextLightSolid: "#ffffff",
-                  colorTextDescription: "rgba(255, 255, 255, 0.85)",
-                  colorTextDisabled: "rgba(255, 255, 255, 0.7)",
-                  colorTextPlaceholder: "rgba(255, 255, 255, 0.7)",
-                  colorTextTertiary: "rgba(255, 255, 255, 0.7)",
-                },
-              },
-            }}
-          >
-            <App>{children}</App>
-          </ConfigProvider>
+          <GlobalThemeProvider fontFamily={outfit.style.fontFamily}>
+            {children}
+          </GlobalThemeProvider>
         </AntdRegistry>
       </body>
     </html>

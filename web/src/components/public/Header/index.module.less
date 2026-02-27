@@ -12,10 +12,10 @@
 
   &.scrolled {
     height: 64px;
-    background: rgba(10, 11, 16, 0.75);
+    background: color-mix(in srgb, var(--public-page-bg) 78%, transparent);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--public-shadow-md);
   }
 }
 
@@ -59,26 +59,26 @@
   max-width: 480px;
   min-width: 420px;
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--public-surface-3);
+  border: 1px solid var(--public-border-3);
   border-radius: 12px;
   padding: 3px;
   transition: all 0.3s ease;
   overflow: hidden;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--public-border-2);
   }
 
   &:focus-within {
-    border-color: #fa8c16;
-    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+    background: var(--public-surface-hover);
   }
 
   :global(.ant-input),
   :global(.ant-input-affix-wrapper) {
     background: transparent !important;
-    color: #fff !important;
+    color: var(--public-text-1) !important;
     height: 40px;
     font-size: 15px;
     border: none !important;
@@ -87,7 +87,7 @@
     padding-left: 10px;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.35) !important;
+      color: var(--public-text-6) !important;
     }
   }
 
@@ -100,8 +100,15 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    border: none !important;
+    background: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+    color: var(--public-on-accent) !important;
     box-shadow: none !important;
+
+    &:hover,
+    &:focus {
+      filter: brightness(1.06);
+    }
 
     :global(.anticon) {
       font-size: 15px;
@@ -120,7 +127,7 @@
   gap: 32px;
 
   a {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--public-text-3);
     font-size: 15px;
     font-weight: 600;
     position: relative;
@@ -141,7 +148,7 @@
     }
 
     &:hover {
-      color: #fff;
+      color: var(--public-text-1);
       &::after {
         width: 100%;
       }
@@ -150,7 +157,7 @@
 }
 
 .historyBtn {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--public-text-3);
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -163,8 +170,13 @@
   }
 }
 
-.historyPopover {
+.historyOverlay {
   width: 320px;
+}
+
+.historyPanel {
+  width: 320px;
+  border-radius: 14px;
 }
 
 .historyHeader {
@@ -172,8 +184,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #fff;
+  border-bottom: 1px solid var(--public-border-1);
+  color: var(--public-text-1);
 
   .icon {
     color: #fa8c16;
@@ -187,7 +199,7 @@
   }
 
   .clear {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--public-text-6);
     cursor: pointer;
     font-size: 16px;
     transition: color 0.3s;
@@ -208,11 +220,11 @@
   padding: 12px 20px;
   gap: 12px;
   align-items: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--public-text-3);
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--public-surface-2);
     color: #fa8c16;
     padding-left: 24px;
   }
@@ -228,10 +240,10 @@
   .episode {
     flex: none;
     font-size: 11px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--public-surface-3);
     padding: 2px 6px;
     border-radius: 4px;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--public-text-6);
   }
 }
 
@@ -243,7 +255,7 @@
 @media (max-width: 768px) {
   .headerWrap {
     height: 56px;
-    background: rgba(10, 11, 16, 0.95);
+    background: color-mix(in srgb, var(--public-page-bg) 95%, transparent);
     backdrop-filter: blur(10px);
 
     &.scrolled {
@@ -283,7 +295,7 @@
   }
 
   .mobileSearchBtn {
-    color: #fff;
+    color: var(--public-text-1);
     font-size: 20px;
     display: flex;
     align-items: center;

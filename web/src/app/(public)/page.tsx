@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Carousel, Spin, Button } from "antd";
+import { Carousel, Button } from "antd";
 import {
   VideoCameraOutlined,
   PlaySquareOutlined,
@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import { ApiGet } from "@/lib/api";
 import FilmList from "@/components/public/FilmList";
+import AppLoading from "@/components/public/Loading";
 import styles from "./page.module.less";
 import { useAppMessage } from "@/lib/useAppMessage";
 
@@ -92,11 +93,7 @@ export default function HomePage() {
   };
 
   if (loading) {
-    return (
-      <div style={{ padding: "100px 0", textAlign: "center" }}>
-        <Spin size="large" />
-      </div>
-    );
+    return <AppLoading />;
   }
 
   return (

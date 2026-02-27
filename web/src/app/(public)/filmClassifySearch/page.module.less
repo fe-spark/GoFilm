@@ -3,14 +3,14 @@
 }
 
 .filterSection {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--public-surface-2);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--public-border-2);
   border-radius: 20px;
   padding: 24px 32px;
   margin-bottom: 40px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--public-shadow-md);
 }
 
 .filterRow {
@@ -18,7 +18,7 @@
   align-items: flex-start;
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--public-border-1);
 
   &:last-child {
     border-bottom: none;
@@ -29,7 +29,7 @@
     padding-top: 6px;
     font-size: 14px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--public-text-6);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -47,21 +47,21 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--public-text-3);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: transparent;
 
   &:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--public-text-1);
+    background: var(--public-surface-3);
     padding-left: 20px;
     padding-right: 12px;
   }
 
   &.active {
     background: #fa8c16;
-    color: #fff;
+    color: var(--public-on-accent);
     box-shadow: 0 4px 12px rgba(250, 140, 22, 0.4);
     transform: scale(1.05);
   }
@@ -71,14 +71,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--public-border-3);
   padding-bottom: 12px;
   margin-bottom: 24px;
 
   .count {
     font-size: 24px;
     font-weight: 700;
-    color: #fff;
+    color: var(--public-text-1);
     display: flex;
     align-items: center;
 

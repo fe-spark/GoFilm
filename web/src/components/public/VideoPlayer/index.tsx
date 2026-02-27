@@ -52,7 +52,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       url: src,
       poster: poster || "",
       autoplay,
-      theme: "#fa8c16",
+      theme: "var(--primary-color)",
       volume: 0.7,
       pip: true,
       autoMini: false,
@@ -169,22 +169,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 type="primary"
                 key="retry"
                 icon={<ReloadOutlined />}
+                className={styles.retryBtn}
                 onClick={() => {
                   setHasError(false);
                   setRetryCount((p) => p + 1);
                 }}
-                style={{ backgroundColor: "#fa8c16", borderColor: "#fa8c16" }}
               >
                 立即重试
               </Button>,
               <Button
                 key="back"
                 ghost
+                className={styles.backBtn}
                 onClick={() => window.location.reload()}
-                style={{
-                  color: "rgba(255,255,255,0.6)",
-                  borderColor: "rgba(255,255,255,0.2)",
-                }}
               >
                 刷新页面
               </Button>,
