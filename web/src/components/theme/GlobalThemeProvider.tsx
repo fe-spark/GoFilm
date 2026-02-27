@@ -61,6 +61,16 @@ export default function GlobalThemeProvider({
     resolveEffective(mode),
   );
 
+  const getCssVar = useCallback(
+    (varName: string) => {
+      if (typeof window === "undefined") return `var(${varName})`;
+      // Directly check for the CSS variable name in computed properties
+      const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+      return val || `var(${varName})`;
+    },
+    [effective],
+  );
+
   // 监听系统主题变化（仅 system 模式下生效）
   useEffect(() => {
     const mql = window.matchMedia("(prefers-color-scheme: light)");
@@ -91,7 +101,7 @@ export default function GlobalThemeProvider({
     () => ({
       algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
       token: {
-        colorPrimary: "var(--primary-color)",
+        colorPrimary: getCssVar("--primary-color"),
         borderRadius: 12,
         fontFamily,
       },
@@ -109,32 +119,34 @@ export default function GlobalThemeProvider({
           borderRadius: 10,
         },
         Popover: {
-          colorBgElevated: "var(--public-surface-2)",
-          colorText: "var(--public-text-2)",
-          colorTextHeading: "var(--public-text-1)",
+          colorBgElevated: getCssVar("--public-surface-2"),
+          colorText: getCssVar("--public-text-2"),
+          colorTextHeading: getCssVar("--public-text-1"),
         },
         Pagination: {
           itemSize: 50,
-          itemBg: "var(--public-surface-3)",
-          colorPrimary: "var(--primary-color)",
-          colorText: "var(--public-text-1)",
-          colorBgContainer: "var(--public-surface-2)",
-          colorTextLightSolid: "var(--public-on-accent)",
-          colorTextDescription: "var(--public-text-2)",
-          colorTextDisabled: "var(--public-text-3)",
-          colorTextPlaceholder: "var(--public-text-3)",
-          colorTextTertiary: "var(--public-text-3)",
+          itemBg: getCssVar("--public-surface-3"),
+          colorPrimary: getCssVar("--primary-color"),
+          colorText: getCssVar("--public-text-1"),
+          colorBgContainer: getCssVar("--public-surface-2"),
+          colorTextLightSolid: getCssVar("--public-on-accent"),
+          colorTextDescription: getCssVar("--public-text-2"),
+          colorTextDisabled: getCssVar("--public-text-3"),
+          colorTextPlaceholder: getCssVar("--public-text-3"),
+          colorTextTertiary: getCssVar("--public-text-3"),
         },
       },
     }),
-    [fontFamily, isDark],
+    [fontFamily, isDark, getCssVar],
   );
+
+
 
   // 当前选中项的图标作为收起态按钮
   const activeOption = OPTIONS.find((o) => o.key === mode) || OPTIONS[2];
 
   return (
-    <ConfigProvider theme={providerTheme}>
+    <ConfigProvider theme={{ ...providerTheme, cssVar: { key: "app-theme" } }}>
       <App>
         {children}
         <div className={styles.floatingDock}>

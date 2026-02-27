@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Form, Input, Switch, Button, Typography, Spin, Space, Card } from "antd";
+import { Form, Input, Switch, Button, Typography, Spin, Space, Card, Row, Col } from "antd";
 import { SettingOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { ApiGet, ApiPost } from "@/lib/api";
 import styles from "./page.module.less";
@@ -79,29 +79,43 @@ export default function SiteConfigPage() {
               },
             }}
           >
-            <div className={styles.grid}>
-              <Form.Item name="siteName" label="网站名称">
-                <Input />
-              </Form.Item>
-              <Form.Item name="domain" label="网站域名">
-                <Input />
-              </Form.Item>
-              <Form.Item name="keyword" label="搜索关键字">
-                <Input />
-              </Form.Item>
-              <Form.Item name="state" label="网站状态" valuePropName="checked">
-                <Switch checkedChildren="开启" unCheckedChildren="关闭" />
-              </Form.Item>
-              <Form.Item name="logo" label="网站Logo" className={styles.fullWidth}>
-                <Input />
-              </Form.Item>
-              <Form.Item name="describe" label="网站描述" className={styles.fullWidth}>
-                <Input />
-              </Form.Item>
-              <Form.Item name="hint" label="维护提示" className={styles.fullWidth}>
-                <Input />
-              </Form.Item>
-            </div>
+            <Row gutter={[40, 0]} className={styles.formRow}>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item name="siteName" label="网站名称">
+                  <Input placeholder="请输入网站名称" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item name="domain" label="网站域名">
+                  <Input placeholder="请输入网站域名" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item name="keyword" label="搜索关键字">
+                  <Input placeholder="请输入搜索关键字" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item name="state" label="网站状态" valuePropName="checked">
+                  <Switch checkedChildren="开启" unCheckedChildren="关闭" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={16}>
+                <Form.Item name="logo" label="网站Logo">
+                  <Input placeholder="请输入完整的 Logo 图片 URL 地址" />
+                </Form.Item>
+              </Col>
+              <Col xs={24}>
+                <Form.Item name="describe" label="网站描述">
+                  <Input.TextArea autoSize={{ minRows: 4, maxRows: 8 }} placeholder="多维度描述本站特色..." />
+                </Form.Item>
+              </Col>
+              <Col xs={24}>
+                <Form.Item name="hint" label="维护提示">
+                  <Input.TextArea autoSize={{ minRows: 4, maxRows: 8 }} placeholder="当网站处于维护状态时，展示给用户的提示语..." />
+                </Form.Item>
+              </Col>
+            </Row>
           </Card>
         </Form>
       </Spin>

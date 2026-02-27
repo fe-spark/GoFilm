@@ -31,8 +31,6 @@
 
 .form {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .sectionCard {
@@ -43,33 +41,8 @@
   width: 100%;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); // Two-column layout as requested
-  gap: 0 40px;
+.formRow {
   padding: 8px 0;
-}
-
-.fullWidth {
-  grid-column: span 2;
-}
-
-@media (max-width: 1200px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .fullWidth {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  .fullWidth {
-    grid-column: span 1;
-  }
 }
 
 .loadingContainer {
@@ -79,35 +52,4 @@
   align-items: center;
   min-height: 400px;
   gap: 16px;
-}
-
-.formCompact {
-  :global(.ant-form-item-label > label) {
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  :global(.ant-input),
-  :global(.ant-input-number-input),
-  :global(.ant-select-selection-item),
-  :global(.ant-select-selection-placeholder),
-  :global(.ant-input::placeholder) {
-    font-size: 13px;
-  }
-
-  :global(.ant-input),
-  :global(.ant-input-affix-wrapper),
-  :global(.ant-select-selector),
-  :global(.ant-input-number) {
-    min-height: 36px !important;
-  }
-
-  :global(.ant-input-number-input) {
-    height: 34px;
-  }
-
-  :global(textarea.ant-input) {
-    min-height: 96px;
-    line-height: 1.5;
-  }
 }

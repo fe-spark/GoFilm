@@ -13,6 +13,8 @@ import {
   Space,
   Spin,
   Card,
+  Row,
+  Col,
 } from "antd";
 import {
   UploadOutlined,
@@ -238,31 +240,37 @@ function FilmAddForm() {
               },
             }}
           >
-            <div className={styles.grid}>
-              <Form.Item
-                label="影片名称"
-                name="name"
-                rules={[{ required: true, message: "请输入名称" }]}
-              >
-                <Input placeholder="请输入影片名称" />
-              </Form.Item>
-              <Form.Item label="影片别名" name="subTitle">
-                <Input placeholder="如: 英文名、又名" />
-              </Form.Item>
-              <Form.Item
-                label="所属分类"
-                name="cid"
-                rules={[{ required: true, message: "请选择分类" }]}
-              >
-                <Select
-                  placeholder="请选择"
-                  onChange={handleClassChange}
-                  options={categories.map((c: any) => ({
-                    label: c.name,
-                    value: c.id,
-                  }))}
-                />
-              </Form.Item>
+            <Row gutter={[40, 0]} className={styles.formRow}>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item
+                  label="影片名称"
+                  name="name"
+                  rules={[{ required: true, message: "请输入名称" }]}
+                >
+                  <Input placeholder="请输入影片名称" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="影片别名" name="subTitle">
+                  <Input placeholder="如: 英文名、又名" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item
+                  label="所属分类"
+                  name="cid"
+                  rules={[{ required: true, message: "请选择分类" }]}
+                >
+                  <Select
+                    placeholder="请选择"
+                    onChange={handleClassChange}
+                    options={categories.map((c: any) => ({
+                      label: c.name,
+                      value: c.id,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
 
               {/* Hidden fields captured by category selection */}
               <Form.Item name="pid" hidden>
@@ -272,27 +280,28 @@ function FilmAddForm() {
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                label="影片海报"
-                name="picture"
-                className={styles.fullWidth}
-              >
-                <Input
-                  placeholder="输入图片URL或上传"
-                  addonAfter={
-                    <Upload customRequest={customUpload} showUploadList={false}>
-                      <Button
-                        icon={<UploadOutlined />}
-                        type="text"
-                        size="small"
-                      >
-                        上传封面
-                      </Button>
-                    </Upload>
-                  }
-                />
-              </Form.Item>
-            </div>
+              <Col xs={24} lg={12} xl={16}>
+                <Form.Item
+                  label="影片海报"
+                  name="picture"
+                >
+                  <Input
+                    placeholder="输入图片URL或上传"
+                    addonAfter={
+                      <Upload customRequest={customUpload} showUploadList={false}>
+                        <Button
+                          icon={<UploadOutlined />}
+                          type="text"
+                          size="small"
+                        >
+                          上传封面
+                        </Button>
+                      </Upload>
+                    }
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
           </Card>
 
           <Card
@@ -310,17 +319,23 @@ function FilmAddForm() {
               },
             }}
           >
-            <div className={styles.grid}>
-              <Form.Item label="导演" name="director">
-                <Input placeholder="多个以逗号分隔" />
-              </Form.Item>
-              <Form.Item label="主演" name="actor">
-                <Input placeholder="多个以逗号分隔" />
-              </Form.Item>
-              <Form.Item label="作者/编剧" name="writer">
-                <Input placeholder="多个以逗号分隔" />
-              </Form.Item>
-            </div>
+            <Row gutter={[40, 0]} className={styles.formRow}>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="导演" name="director">
+                  <Input placeholder="多个以逗号分隔" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="主演" name="actor">
+                  <Input placeholder="多个以逗号分隔" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="作者/编剧" name="writer">
+                  <Input placeholder="多个以逗号分隔" />
+                </Form.Item>
+              </Col>
+            </Row>
           </Card>
 
           <Card
@@ -338,26 +353,38 @@ function FilmAddForm() {
               },
             }}
           >
-            <div className={styles.grid}>
-              <Form.Item label="上映日期" name="releaseDate">
-                <Input placeholder="YYYY-MM-DD" />
-              </Form.Item>
-              <Form.Item label="制作地区" name="area">
-                <Input placeholder="如: 中国大陆, 美国" />
-              </Form.Item>
-              <Form.Item label="语言" name="lang">
-                <Input placeholder="如: 国语, 英语" />
-              </Form.Item>
-              <Form.Item label="上映年份" name="year">
-                <Input placeholder="YYYY" />
-              </Form.Item>
-              <Form.Item label="检索首字母" name="initial">
-                <Input placeholder="大写字母" />
-              </Form.Item>
-              <Form.Item label="剧情标签" name="classTag">
-                <Input placeholder="如: 动作, 冒险" />
-              </Form.Item>
-            </div>
+            <Row gutter={[40, 0]} className={styles.formRow}>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="上映日期" name="releaseDate">
+                  <Input placeholder="YYYY-MM-DD" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="制作地区" name="area">
+                  <Input placeholder="如: 中国大陆, 美国" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="语言" name="lang">
+                  <Input placeholder="如: 国语, 英语" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="上映年份" name="year">
+                  <Input placeholder="YYYY" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="检索首字母" name="initial">
+                  <Input placeholder="大写字母" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="剧情标签" name="classTag">
+                  <Input placeholder="如: 动作, 冒险" />
+                </Form.Item>
+              </Col>
+            </Row>
           </Card>
 
           <Card
@@ -377,26 +404,38 @@ function FilmAddForm() {
               },
             }}
           >
-            <div className={styles.grid}>
-              <Form.Item label="更新备注" name="remarks">
-                <Input placeholder="如: 完结, 第10集" />
-              </Form.Item>
-              <Form.Item label="影片状态" name="state">
-                <Input placeholder="如: 正片, 预告" />
-              </Form.Item>
-              <Form.Item label="影片热度" name="hits">
-                <InputNumber style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item label="播放来源标识" name="playForm">
-                <Input placeholder="如: m3u8_list" />
-              </Form.Item>
-              <Form.Item label="豆瓣 ID" name="dbId">
-                <InputNumber style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item label="豆瓣评分" name="dbScore">
-                <Input />
-              </Form.Item>
-            </div>
+            <Row gutter={[40, 0]} className={styles.formRow}>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="更新备注" name="remarks">
+                  <Input placeholder="如: 完结, 第10集" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="影片状态" name="state">
+                  <Input placeholder="如: 正片, 预告" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="影片热度" name="hits">
+                  <InputNumber style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="播放来源标识" name="playForm">
+                  <Input placeholder="如: m3u8_list" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="豆瓣 ID" name="dbId">
+                  <InputNumber style={{ width: "100%" }} />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12} xl={8}>
+                <Form.Item label="豆瓣评分" name="dbScore">
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
           </Card>
 
           <Card

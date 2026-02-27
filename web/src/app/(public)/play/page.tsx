@@ -69,13 +69,13 @@ function PlayerContent() {
     void load();
   }, [id, sourceId, episodeIdx, message]);
 
-  // 让 sidebar 最大高度跟随左列
+  // 让 sidebar 高度严格跟随左列
   useEffect(() => {
     const leftEl = leftColumnRef.current;
     const sideEl = sidebarRef.current;
     if (!leftEl || !sideEl) return;
     const sync = () => {
-      sideEl.style.maxHeight = `${leftEl.offsetHeight}px`;
+      sideEl.style.height = `${leftEl.offsetHeight}px`;
     };
     sync();
     const ro = new ResizeObserver(sync);
@@ -136,7 +136,7 @@ function PlayerContent() {
       if (historyRaw) {
         try {
           historyMap = JSON.parse(historyRaw);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       historyMap[data.detail.id] = {
@@ -343,10 +343,10 @@ function PlayerContent() {
           dangerouslySetInnerHTML={{
             __html: detail.descriptor.content
               ? detail.descriptor.content
-                  .replace(/<\/?p>/g, "")
-                  .replace(/<br\s*\/?>/gi, "")
-                  .replace(/&nbsp;/g, " ")
-                  .replace(/^[\s\u3000]+|[\s\u3000]+$/g, "")
+                .replace(/<\/?p>/g, "")
+                .replace(/<br\s*\/?>/gi, "")
+                .replace(/&nbsp;/g, " ")
+                .replace(/^[\s\u3000]+|[\s\u3000]+$/g, "")
               : "暂无简介",
           }}
         />
