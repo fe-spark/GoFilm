@@ -57,14 +57,20 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(var(--ant-color-primary-rgb), 0.05);
+  background: var(--ant-color-primary-bg, rgba(79, 127, 223, 0.08));
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 4px dashed var(--ant-color-primary);
+  border: 3px dashed var(--ant-color-primary-border, var(--ant-color-primary));
+  box-shadow: inset 0 0 0 1px
+    color-mix(
+      in srgb,
+      var(--ant-color-primary-border, var(--ant-color-primary)) 60%,
+      transparent
+    );
   border-radius: 24px;
   pointer-events: none;
   opacity: 0;
@@ -79,20 +85,20 @@
 .dropText {
   font-size: 32px;
   font-weight: 700;
-  color: var(--ant-color-primary);
+  color: var(--ant-color-primary-text, var(--ant-color-primary));
   margin-top: 20px;
 }
 
 .dragger {
   background: transparent !important;
-  border: 2px dashed rgba(255, 255, 255, 0.1) !important;
+  border: 2px dashed var(--ant-color-border, rgba(0, 0, 0, 0.2)) !important;
   border-radius: 12px !important;
   transition: all 0.3s var(--ant-motion-ease-in-out) !important;
 }
 
 .dragger:hover {
-  border-color: var(--ant-color-primary) !important;
-  background: rgba(var(--ant-color-primary-rgb), 0.02) !important;
+  border-color: var(--ant-color-primary-border, var(--ant-color-primary)) !important;
+  background: var(--ant-color-primary-bg, rgba(79, 127, 223, 0.06)) !important;
 }
 
 .draggerIcon {
@@ -195,9 +201,13 @@
 
 .emptyState {
   padding: 80px 0;
-  background: rgba(255, 255, 255, 0.02);
+  background: color-mix(
+    in srgb,
+    var(--ant-color-fill-quaternary, #f5f7fb) 55%,
+    transparent
+  );
   border-radius: 16px;
-  border: 1px dashed var(--ant-color-border-secondary);
+  border: 1px dashed var(--ant-color-border, rgba(0, 0, 0, 0.25));
 }
 
 .pagination {
