@@ -20,14 +20,19 @@ func (sl *SpiderLogic) BatchCollect(time int, ids []string) {
 // StartCollect 执行对指定站点的采集任务
 func (sl *SpiderLogic) StartCollect(id string, h int) error {
 	// 先判断采集站是否存在于系统数据中
-	if fs := system.FindCollectSourceById(id); fs == nil {
-		return errors.New("采集任务开启失败采集站信息不存在")
+	fs := system.FindCollectSourceById(id)
+	if fs == nil {
+		return errors.New("采集任务开启失败，采集站信息不存在")
 	}
-	// 存在则开启协程执行采集方法
+	// 校验站点是否处于启用状态
+	if !fs.State {
+		return errors.New("采集任务开启失败，该采集站已被禁用，请先启用后再采集")
+	}
+	// 存在且已启用，开启协程执行采集方法
 	go func() {
 		err := spider.HandleCollect(id, h)
 		if err != nil {
-			log.Printf("资源站[%s]采集任务执行失败: %s", id, err)
+			log.Printf("[SpiderLogic] 资源站[%s]采集任务执行失败: %s", id, err)
 		}
 	}()
 	return nil

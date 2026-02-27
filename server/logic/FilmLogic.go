@@ -59,7 +59,9 @@ func (fl *FilmLogic) SaveFilmDetail(fd system.FilmDetailVo) error {
 	fd.UpdateTime = now.Format(time.DateTime)
 	fd.AddTime = fd.UpdateTime
 	// 生成ID, 由于是自定义上传的影片, 避免和采集站点的影片冲突, 以当前时间时间戳作为ID
-	fd.Id = now.Unix()
+	if fd.Id == 0 {
+		fd.Id = now.Unix()
+	}
 	// 生成影片详情信息
 	detail, err := conver.CovertFilmDetailVo(fd)
 	if err != nil || detail.PlayList == nil {

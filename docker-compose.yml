@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  web:
+    container_name: film_web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - film-network
+    environment:
+      - API_URL=http://film:3601
+    depends_on:
+      - film
+
+  film:
+    container_name: film_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      PORT: 3601
+      MYSQL_HOST: host.docker.internal # 改为宿主机
+      MYSQL_PORT: 3306 # 改为宿主机 MySQL 端口
+      MYSQL_USER: film
+      MYSQL_PASSWORD: jKccK4ZFPSTybKXP
+      MYSQL_DBNAME: FilmSite
+      REDIS_HOST: host.docker.internal # 改为宿主机
+      REDIS_PORT: 6379 # 改为宿主机 Redis 端口
+      REDIS_PASSWORD: redis_r3Dp6C
+      REDIS_DB: 0
+    ports:
+      - 3601:3601
+    networks:
+      - film-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # 添加这行
+    command: ["./main"]
+
+networks:
+  film-network:
+    driver: bridge

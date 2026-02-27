@@ -9,10 +9,38 @@ const outfit = Outfit({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const metadata: Metadata = {
-  title: "GoFilm - 影院级沉浸式影视站",
-  description: "优质影视资源，极速在线观看",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let siteName = "";
+  let describe = "";
+  let keyword = "";
+  let icon = "";
+
+  try {
+    const apiUrl = process.env.API_URL || "http://127.0.0.1:3601";
+    const res = await fetch(`${apiUrl}/config/basic`, {
+      next: { revalidate: 60 },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.code === 0 && json.data) {
+        siteName = json.data.siteName || "";
+        describe = json.data.describe || "";
+        keyword = json.data.keyword || "";
+        icon = json.data.logo || "";
+      }
+    }
+  } catch (err) {
+    console.error("fetch metadata error:", err);
+  }
+
+  const generated: Metadata = {};
+  if (siteName) generated.title = siteName;
+  if (describe) generated.description = describe;
+  if (keyword) generated.keywords = keyword;
+  if (icon) generated.icons = { icon };
+
+  return generated;
+}
 
 export default function RootLayout({
   children,
@@ -30,11 +58,6 @@ export default function RootLayout({
                 colorPrimary: "#fa8c16",
                 borderRadius: 12,
                 fontFamily: outfit.style.fontFamily,
-                colorBgBase: "#0a0b10",
-                colorBgContainer: "#14151b",
-                colorBgElevated: "#1c1d26",
-                colorBorder: "rgba(255, 255, 255, 0.1)",
-                colorText: "rgba(255, 255, 255, 0.88)",
               },
               components: {
                 Button: {
@@ -48,6 +71,23 @@ export default function RootLayout({
                 Input: {
                   controlHeight: 40,
                   borderRadius: 10,
+                },
+                Popover: {
+                  colorBgElevated: "#14151b",
+                  colorText: "rgba(255, 255, 255, 0.85)",
+                  colorTextHeading: "#ffffff",
+                },
+                Pagination: {
+                  itemSize: 50,
+                  itemBg: "rgba(255, 255, 255, 0.08)",
+                  colorPrimary: "#fa8c16",
+                  colorText: "rgba(255, 255, 255, 0.95)",
+                  colorBgContainer: "rgba(255, 255, 255, 0.1)",
+                  colorTextLightSolid: "#ffffff",
+                  colorTextDescription: "rgba(255, 255, 255, 0.85)",
+                  colorTextDisabled: "rgba(255, 255, 255, 0.7)",
+                  colorTextPlaceholder: "rgba(255, 255, 255, 0.7)",
+                  colorTextTertiary: "rgba(255, 255, 255, 0.7)",
                 },
               },
             }}

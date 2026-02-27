@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Cors 开启跨域请求

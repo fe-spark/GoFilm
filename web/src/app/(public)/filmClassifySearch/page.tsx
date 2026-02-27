@@ -63,6 +63,7 @@ function ClassifySearchContent() {
   if (!data) return null;
 
   const { title, list, search, params, page } = data;
+  const safeList = Array.isArray(list) ? list : [];
 
   return (
     <div className={styles.container}>
@@ -93,10 +94,10 @@ function ClassifySearchContent() {
       </div>
 
       <div className={styles.content}>
-        <FilmList list={list} className={styles.classifyGrid} />
+        <FilmList list={safeList} className={styles.classifyGrid} />
       </div>
 
-      {list.length > 0 && (
+      {safeList.length > 0 && (
         <div className={styles.paginationWrapper}>
           <Pagination
             current={parseInt(searchParams.get("current") || "1")}

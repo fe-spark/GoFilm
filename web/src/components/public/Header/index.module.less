@@ -56,52 +56,53 @@
 .searchGroup {
   display: flex;
   align-items: center;
-  max-width: 400px;
+  max-width: 360px;
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 100px; // Capsule shape
-  overflow: hidden;
-  padding: 2px 4px 2px 16px;
+  border-radius: 8px;
+  padding: 2px;
   transition: all 0.3s ease;
+  overflow: hidden;
 
-  &:focus-within {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: #fa8c16;
-    box-shadow: 0 0 15px rgba(250, 140, 22, 0.2);
-    width: 110%; // Slight expansion on focus
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
-  input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    height: 38px;
-    color: #fff;
+  &:focus-within {
+    border-color: #fa8c16;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  :global(.ant-input),
+  :global(.ant-input-affix-wrapper) {
+    background: transparent !important;
+    color: #fff !important;
+    height: 32px;
     font-size: 14px;
-    font-weight: 500;
+    border: none !important;
+    box-shadow: none !important;
+    flex: 1;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.25) !important;
     }
   }
 
-  :global(.ant-btn) {
-    background: #fa8c16 !important;
-    border: none !important;
-    color: #fff !important;
-    height: 34px;
-    width: 34px;
-    border-radius: 50% !important;
+  .searchBtn {
+    height: 32px;
+    border-radius: 6px !important;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 0 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease !important;
+    gap: 4px;
+    border: none !important;
+    box-shadow: none !important;
 
-    &:hover {
-      transform: scale(1.1);
-      background: #ffa940 !important;
+    :global(.anticon) {
+      font-size: 14px;
     }
   }
 }
@@ -162,23 +163,6 @@
 
 .historyPopover {
   width: 320px;
-
-  :global(.ant-popover-inner) {
-    padding: 0;
-    background: rgba(20, 21, 27, 0.8) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  :global(.ant-popover-arrow) {
-    &::before {
-      background: #14151b !important;
-    }
-  }
 }
 
 .historyHeader {

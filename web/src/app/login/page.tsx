@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Input } from "antd";
+import { Button, Input, ConfigProvider, theme } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -41,43 +41,84 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h2 className={styles.title}>GoFilm Manage</h2>
-        <div className={styles.form}>
-          <Input
-            size="large"
-            placeholder="用户名 / 邮箱"
-            prefix={<UserOutlined style={{ color: "#764ba2" }} />}
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            onPressEnter={handleLogin}
-            className={styles.input}
-          />
-          <Input.Password
-            size="large"
-            placeholder="密码"
-            prefix={<LockOutlined style={{ color: "#764ba2" }} />}
-            iconRender={(visible) =>
-              visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
-            }
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onPressEnter={handleLogin}
-            className={styles.input}
-          />
-          <Button
-            type="primary"
-            size="large"
-            loading={loading}
-            onClick={handleLogin}
-            className={styles.btn}
-            block
-          >
-            登 录
-          </Button>
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: "#fa8c16",
+          borderRadius: 16,
+        },
+        components: {
+          Input: {
+            colorBgContainer: "rgba(255, 255, 255, 0.04)",
+            colorBorder: "rgba(255, 255, 255, 0.1)",
+            controlHeightLG: 50,
+            paddingContentHorizontal: 16,
+            // 确保内部 input 元素透明
+            colorBgContainerDisabled: "transparent",
+          },
+          Button: {
+            controlHeightLG: 54,
+            fontWeight: 700,
+            borderRadiusLG: 16,
+            colorPrimary: "#fa8c16",
+          },
+        },
+      }}
+    >
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <div className={styles.brand}>
+            <div className={styles.siteName}>BRACKET</div>
+            <div className={styles.subTitle}>Management System</div>
+          </div>
+
+          <div className={styles.form}>
+            <Input
+              size="large"
+              placeholder="用户名 / 邮箱"
+              prefix={
+                <UserOutlined style={{ color: "var(--ant-color-primary)" }} />
+              }
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              onPressEnter={handleLogin}
+            />
+            <Input.Password
+              size="large"
+              placeholder="密码"
+              prefix={
+                <LockOutlined style={{ color: "var(--ant-color-primary)" }} />
+              }
+              iconRender={(visible) =>
+                visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
+              }
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onPressEnter={handleLogin}
+            />
+            <Button
+              type="primary"
+              size="large"
+              loading={loading}
+              onClick={handleLogin}
+              className={styles.btn}
+              block
+              style={{
+                background: "linear-gradient(135deg, #fa8c16 0%, #fa541c 100%)",
+                border: "none",
+                boxShadow: "0 8px 20px rgba(250, 140, 22, 0.2)",
+              }}
+            >
+              SIGN IN
+            </Button>
+          </div>
+
+          <div className={styles.footer}>
+            © {new Date().getFullYear()} Bracket Team. All rights reserved.
+          </div>
         </div>
       </div>
-    </div>
+    </ConfigProvider>
   );
 }

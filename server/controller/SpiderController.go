@@ -2,11 +2,12 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"server/config"
 	"server/logic"
 	"server/model/system"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CollectFilm 开启ID对应的资源站的采集任务
@@ -42,10 +43,11 @@ func StarSpider(c *gin.Context) {
 		system.Failed("采集开启失败,采集时长不能为0", c)
 		return
 	}
+
 	// 根据 Batch 执行对应的逻辑
 	if cp.Batch {
 		// 执行批量采集
-		if cp.Ids == nil || len(cp.Ids) <= 0 {
+		if len(cp.Ids) <= 0 {
 			system.Failed("批量采集开启失败, 关联的资源站信息为空", c)
 			return
 		}

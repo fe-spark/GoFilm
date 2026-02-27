@@ -3,16 +3,16 @@ package controller
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"server/logic"
 	"server/model/system"
 	"server/plugin/SystemInit"
 	"server/plugin/common/util"
+
+	"github.com/gin-gonic/gin"
 )
 
 func ManageIndex(c *gin.Context) {
 	system.SuccessOnlyMsg("后台管理中心", c)
-	return
 }
 
 // ------------------------------------------------------ 站点基本配置 ------------------------------------------------------

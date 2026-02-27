@@ -2,11 +2,12 @@ package system
 
 import (
 	"fmt"
-	"gorm.io/gorm"
 	"log"
 	"server/config"
 	"server/plugin/common/util"
 	"server/plugin/db"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -62,7 +63,7 @@ func InitAdminAccount() {
 		Salt:     util.GenerateSalt(),
 		Email:    "administrator@gmail.com",
 		Gender:   2,
-		NickName: "Zero",
+		NickName: "Spark",
 		Avatar:   "empty",
 		Status:   0,
 	}

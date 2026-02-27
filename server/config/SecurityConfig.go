@@ -18,7 +18,7 @@ MEgCQQDTZ7IaFGk9oBTa4oZhXZgtXAQrNVyxXORZ9zHzTkd2jhgztKIV5W5LuiK/
 `
 
 const (
-	Issuer           = "GoFilm"
+	Issuer           = "Bracket"
 	AuthTokenExpires = 10 * 24 // 单位 h
 	UserTokenKey     = "User:Token:%d"
 )

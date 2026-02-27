@@ -96,12 +96,22 @@ a {
   transform: scale(0.96);
 }
 
-.ant-input,
 .ant-input-affix-wrapper {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
-  transition: var(--transition-smooth) !important;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: var(--transition-smooth);
+}
+
+.ant-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: var(--transition-smooth);
+}
+
+.ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
 }
 
 .ant-input:focus,
@@ -110,88 +120,15 @@ a {
   box-shadow: 0 0 0 2px rgba(250, 140, 22, 0.2) !important;
 }
 
-/* --- Global Pagination Overrides (High Contrast) --- */
-.ant-pagination {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
+/* Ant Design Popover Dark Theme Force */
 
-.ant-pagination-item {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: 12px !important;
-  height: 44px !important;
-  min-width: 44px !important;
-  line-height: 42px !important;
-  font-weight: 700 !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-.ant-pagination-item a {
+/* Ant Design Popover Dark Theme Force */
+.ant-popover-inner {
+  background-color: #14151b !important;
   color: #fff !important;
-  font-weight: 800 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.ant-pagination-item:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: var(--primary-color) !important;
-  transform: translateY(-4px);
-}
-
-.ant-pagination-item:hover a {
-  color: var(--primary-color) !important;
-}
-
-.ant-pagination-item-active {
-  background: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-}
-
-.ant-pagination-item-active a {
-  color: #fff !important;
-}
-
-.ant-pagination-item-active {
-  box-shadow: 0 8px 24px rgba(250, 140, 22, 0.5) !important;
-  transform: translateY(-4px);
-}
-
-.ant-pagination-prev,
-.ant-pagination-next {
-  .ant-pagination-item-link {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    border-radius: 12px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #fff !important;
-    transition: all 0.3s !important;
-  }
-}
-
-.ant-pagination-prev:hover .ant-pagination-item-link,
-.ant-pagination-next:hover .ant-pagination-item-link {
-  background: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 6px 16px rgba(250, 140, 22, 0.4);
-}
-
-.ant-pagination-jump-prev
-  .ant-pagination-item-container
-  .ant-pagination-item-ellipsis,
-.ant-pagination-jump-next
-  .ant-pagination-item-container
-  .ant-pagination-item-ellipsis {
-  color: rgba(255, 255, 255, 0.6) !important;
-  font-size: 18px !important;
-  letter-spacing: 2px !important;
-}
-
-.ant-pagination-jump-prev:hover .ant-pagination-item-link-icon,
-.ant-pagination-jump-next:hover .ant-pagination-item-link-icon {
-  color: var(--primary-color) !important;
+.ant-popover-arrow::before {
+  background-color: #14151b !important;
 }

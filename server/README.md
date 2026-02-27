@@ -4,8 +4,8 @@
 
 - server 是本项目的后端项目
 - 主要用于提供前端项目需要的 API数据接口, 以及数据搜集和更新
-- 实现思路 : 
-  - 使用 gocolly 获取公开的影视资源, 
+- 实现思路 :
+  - 使用 gocolly 获取公开的影视资源,
   - 将请求数据通过程序处理整合成统一格式后使用redis进行暂存
   - 使用 mysql 存储收录的影片的检索信息, 用于影片检索, 分类
   - 使用 gin 作为web服务, 提供相应api接口
@@ -23,77 +23,69 @@ gorm.io/gorm v1.24.6
 gorm.io/driver/mysql v1.4.7
 ```
 
-
-
 ## 项目结构
 
 > 项目主要目录结构
 
-- config				用于存放项目中使用的配置信息和静态常量
-- controller	      请求处理控制器
-- logic                请求处理逻辑实现
-- model              数据模型结构体以及与数据库交互
-- plugin              项目所需的插件工具集合
-  - common     公共依赖
-  - db              数据库配置信息
-  - spider         gocolly配置, 执行逻辑, 数据前置处理等
+- config 用于存放项目中使用的配置信息和静态常量
+- controller 请求处理控制器
+- logic 请求处理逻辑实现
+- model 数据模型结构体以及与数据库交互
+- plugin 项目所需的插件工具集合
+  - common 公共依赖
+  - db 数据库配置信息
+  - spider gocolly配置, 执行逻辑, 数据前置处理等
 
 ```text
-server                          
-├─ config                       
-│  └─ DataConfig.go             
-├─ controller                   
-│  ├─ IndexController.go        
-│  └─ SpiderController.go       
-├─ logic                        
-│  ├─ IndexLogic.go             
-│  └─ SpiderLogic.go            
-├─ model                        
-│  ├─ Categories.go             
-│  ├─ Movies.go                 
-│  ├─ RequestParams.go          
-│  ├─ ResponseJson.go           
-│  └─ Search.go                 
-├─ plugin                       
-│  ├─ common                    
-│  │  ├─ dp                     
-│  │  │  ├─ ProcessCategory.go  
-│  │  │  └─ ProcessMovies.go    
-│  │  ├─ param                  
-│  │  │  └─ SimpleParam.go      
-│  │  └─ util                   
-│  │     ├─ FileDownload.go     
-│  │     └─ Request.go          
-│  ├─ db                        
-│  │  ├─ mysql.go               
-│  │  └─ redis.go               
-│  └─ spider                    
-│     ├─ Spider.go              
-│     └─ SpiderCron.go          
-├─ router                       
-│  └─ router.go                 
-├─ go.mod                       
-├─ go.sum                       
-├─ main.go                      
-└─ README.md                    
+server
+├─ config
+│  └─ DataConfig.go
+├─ controller
+│  ├─ IndexController.go
+│  └─ SpiderController.go
+├─ logic
+│  ├─ IndexLogic.go
+│  └─ SpiderLogic.go
+├─ model
+│  ├─ Categories.go
+│  ├─ Movies.go
+│  ├─ RequestParams.go
+│  ├─ ResponseJson.go
+│  └─ Search.go
+├─ plugin
+│  ├─ common
+│  │  ├─ dp
+│  │  │  ├─ ProcessCategory.go
+│  │  │  └─ ProcessMovies.go
+│  │  ├─ param
+│  │  │  └─ SimpleParam.go
+│  │  └─ util
+│  │     ├─ FileDownload.go
+│  │     └─ Request.go
+│  ├─ db
+│  │  ├─ mysql.go
+│  │  └─ redis.go
+│  └─ spider
+│     ├─ Spider.go
+│     └─ SpiderCron.go
+├─ router
+│  └─ router.go
+├─ go.mod
+├─ go.sum
+├─ main.go
+└─ README.md
 ```
-
-
 
 ## 启动方式
 
 ### 本地运行
 
 1.  修改 /server/plugin/db 目录下的 mysql.go 和 redis.go 中的连接地址和用户名密码
-2. 在 server 目录下执行 `go run main.go`
-
-
-
-
+2.  在 server 目录下执行 `go run main.go`
 
 ## 数据库信息简介
 
-#### 1.Mysql  
+#### 1.Mysql
 
 > 连接信息(以docker compose部署为例) :
 
@@ -137,11 +129,9 @@ server
 | remarks      | varchar  | 更新状态(完结 \| xx集) |
 | release_data | bigint   | 上映时间戳             |
 
-
-
 #### 2.Redis
 
-> 连接信息(以docker compose部署为例) : 
+> 连接信息(以docker compose部署为例) :
 
 ```yaml
   ## 部署时默认使用如下信息
@@ -151,8 +141,6 @@ server
     password: root
     DB: 0  ##使用的redis数据库为0号库
 ```
-
-
 
 ## 服务端API数据示例
 
@@ -170,22 +158,20 @@ server
 }
 ```
 
-
-
-| 名称               | URL                 | client component                              | Method | Params                                                       |
-| ------------------ | :------------------ | --------------------------------------------- | ------ | ------------------------------------------------------------ |
-| 首页数据           | /index              | client/src/views/index/Home.vue               | GET    | 无                                                           |
-| 网站基本配置信息   | /config/basic       | client/src/components/index/Header.vue        | GET    | 无                                                           |
-| 影片分类导航       | /navCategory        | client/src/components/index/Header.vue        | GET    | 无                                                           |
-| 影片详情           | /filmDetail         | client/src/views/index/FilmDetails.vue        | GET    | id   (int, 影片ID)                                           |
-| 影片播放页数据     | /filmPlayInfo       | client/src/views/index/Play.vue               | GET    | id   (int, 影片ID) <br>playFrom   (string, 播放源ID)<br>episode   (int, 集数索引) |
-| 影片检索(名称搜索) | /searchFilm         | client/src/views/index/SearchFilm.vue         | GET    | keyword   (string, 影片名)                                   |
-| 影片分类首页       | /filmClassify       | client/src/views/index/FilmClassify.vue       | GET    | Pid   (int, 一级分类ID)                                      |
-| 影片分类详情页     | /filmClassidySearch | client/src/views/index/FilmClassifySearch.vue | GET    | Pid   (int, 一级分类ID)<br>Category   (int, 二级分类ID)<br>Plot   (string, 剧情)<br>Area   (string, 地区)<br>Language   (string, 语言)<br>Year   (string, 年份)<br>Sort   (string, 排序方式) |
+| 名称               | URL                 | client component                              | Method | Params                                                                                                                                                                         |
+| ------------------ | :------------------ | --------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 首页数据           | /index              | client/src/views/index/Home.vue               | GET    | 无                                                                                                                                                                             |
+| 网站基本配置信息   | /config/basic       | client/src/components/index/Header.vue        | GET    | 无                                                                                                                                                                             |
+| 影片分类导航       | /navCategory        | client/src/components/index/Header.vue        | GET    | 无                                                                                                                                                                             |
+| 影片详情           | /filmDetail         | client/src/views/index/FilmDetails.vue        | GET    | id (int, 影片ID)                                                                                                                                                               |
+| 影片播放页数据     | /filmPlayInfo       | client/src/views/index/Play.vue               | GET    | id (int, 影片ID) <br>playFrom (string, 播放源ID)<br>episode (int, 集数索引)                                                                                                    |
+| 影片检索(名称搜索) | /searchFilm         | client/src/views/index/SearchFilm.vue         | GET    | keyword (string, 影片名)                                                                                                                                                       |
+| 影片分类首页       | /filmClassify       | client/src/views/index/FilmClassify.vue       | GET    | Pid (int, 一级分类ID)                                                                                                                                                          |
+| 影片分类详情页     | /filmClassidySearch | client/src/views/index/FilmClassifySearch.vue | GET    | Pid (int, 一级分类ID)<br>Category (int, 二级分类ID)<br>Plot (string, 剧情)<br>Area (string, 地区)<br>Language (string, 语言)<br>Year (string, 年份)<br>Sort (string, 排序方式) |
 
 #### 2. 接口响应数据示例:
 
--  `/index` 首页数据
+- `/index` 首页数据
 
 ```text
 {
@@ -212,7 +198,7 @@ server
                         "classTag": "xxx",				// 剧情标签
                         "hits": 0,					// 热度
                         "initial": "X",					// 首字母
-                        "language": "xxx",				// 语言 
+                        "language": "xxx",				// 语言
                         "mid": 10000,					// 影片ID
                         "name": "xxx",					// 影片名称
                         "pid": 1,					// 上级分类ID
@@ -224,7 +210,7 @@ server
                         "updateStamp": 1704880403,		// 更新时间戳
                         "year": 2024,					// 年份
                     }
-                ],	
+                ],
         		"movies": [			// 近期更新影片
                     {
                         "id": 10000,						// 影片ID
@@ -244,7 +230,7 @@ server
                     }
                 ],
         		"nav": [						// 导航信息
-                    {	
+                    {
                     	"id": 0,				// 分类ID
        					"name": "xxxx", 		// 分类名称
        					"pid": 0,				//上级分类ID
@@ -265,7 +251,7 @@ server
 {
     "code": 0,
     "data": {
-        "siteName": "GoFilm",					// 网站名称
+        "siteName": "Bracket",					// 网站名称
         "domain": "http://127.0.0.1:3600",			// 域名
         "logo": "https://xxx.jpg",				// 网站logo
         "keyword": "xxxx, xxxx",				// 网站搜索关键字
@@ -283,7 +269,7 @@ server
 {
     "code": 0,
     "data": [
-             {	
+             {
                     "id": 0,				// 分类ID
        				"name": "xxxx", 			// 分类名称
        				"pid": 0,					// 上级分类ID
@@ -313,13 +299,13 @@ server
                     "episode": "第xx集",					// 集数
                     "link": "https://xxx/index.m3u8"		// 播放地址url
                 },
-            ],	
-            "downloadList": [ 						// 下载地址列表 
+            ],
+            "downloadList": [ 						// 下载地址列表
             	 {
                     "episode": "第xx集",					// 集数
                     "link": "https://xxx/index.m3u8"			// 播放地址url
                	 },
-            ],	
+            ],
             "descriptor": { 						// 影片详情
             	"subTitle": "",						// 副标题, 别名
                 "cName": "xxxx",					// 分类名称
@@ -342,7 +328,7 @@ server
                 "dbScore": "0.0",					// 豆瓣评分
                 "hits": 0,							// 热度
                 "content": "xxx"					//影片内容简介(全)
-            },	
+            },
             "list": [ 								// 播放地址列表(全站点)
             	{
                     "id": "xxxxxxxxxxxx",			// 播放源ID
@@ -354,7 +340,7 @@ server
                          },
                     ]
                 },
-            ]	
+            ]
         },
         "relate": [ 		// 相关影片推荐
         	{
@@ -404,13 +390,13 @@ server
                     "episode": "第xx集",							   // 集数
                     "link": "https://xxx/index.m3u8"// 播放地址url
                 },
-            ],	
-            "downloadList": [ 	// 下载地址列表 
+            ],
+            "downloadList": [ 	// 下载地址列表
                  {
                     "episode": "第xx集",				// 集数
                     "link": "https://xxx/index.m3u8"	// 播放地址url
                  },
-            ],	
+            ],
             "descriptor": { 	// 影片详情
                 "subTitle": "",						// 副标题, 别名
                 "cName": "xxxx",					// 分类名称
@@ -433,7 +419,7 @@ server
                 "dbScore": "0.0",					// 豆瓣评分
                 "hits": 0,							// 热度
                 "content": "xxx"					//影片内容简介(全)
-            },	
+            },
             "list": [ 		// 播放地址列表(全站点)
                 {
                     "id": "xxxxxxxxxxxx",			// 播放源ID
@@ -445,8 +431,8 @@ server
                          },
                     ]
                 },
-            ]	
-        },							
+            ]
+        },
         "relate": [ 		// 相关影片推荐
             {
                 "id": 10000,						// 影片ID
@@ -538,7 +524,7 @@ server
 }
 ```
 
--  ` /filmClassidySearch` 影片分类检索页数据
+- ` /filmClassidySearch` 影片分类检索页数据
 
 ```text
 {
@@ -563,7 +549,7 @@ server
             }
         ],
         "page": { 		// 分页信息
-        	"pageSize": 49,							// 每页页数						
+        	"pageSize": 49,							// 每页页数
             "current": 1,							// 当前页
             "pageCount": xx,						// 总页数
             "total": xx,							// 总数据量
@@ -580,7 +566,7 @@ server
         "search": { 	// 分类标签组信息
         	"sortList": [ "Category","Plot","Area","Language","Year","Sort" ], 		// 标签数据排序, 固定值
             "tags": { 			// 标签组, 用于页面筛选Tag渲染
-            	"Area": [ { Name:"", Value:"" } ],								
+            	"Area": [ { Name:"", Value:"" } ],
                 "Category": [ { Name:"", Value:"" } ],
                 "Initial": [ { Name:"", Value:"" } ],
                 "Language": [ { Name:"", Value:"" } ],
@@ -597,7 +583,7 @@ server
                 "Sort": "排序",
                 "Year": "年份"
             }
-        },				
+        },
         "title": { 		// 当前一级分类信息
         	"id": 1,				// 分类ID
             "pid": 0,				// 上级分类ID
@@ -608,18 +594,3 @@ server
     "msg": ""
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

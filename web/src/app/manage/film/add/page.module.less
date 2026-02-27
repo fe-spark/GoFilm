@@ -1,5 +1,5 @@
 .container {
-  padding: 0;
+  padding: 0; // Padding handled by internal layout
   background: transparent;
   border: none;
 }
@@ -13,6 +13,9 @@
   background: var(--ant-color-bg-container);
   border-radius: 12px;
   border: 1px solid var(--ant-color-border-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .headerLeft {
@@ -42,7 +45,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); // Two-column layout as requested
   gap: 0 40px;
   padding: 8px 0;
 }
@@ -69,6 +72,15 @@
   }
 }
 
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
 .formCompact {
   :global(.ant-form-item-label > label) {
     font-size: 13px;
@@ -76,6 +88,7 @@
   }
 
   :global(.ant-input),
+  :global(.ant-input-number-input),
   :global(.ant-select-selection-item),
   :global(.ant-select-selection-placeholder),
   :global(.ant-input::placeholder) {
@@ -84,7 +97,17 @@
 
   :global(.ant-input),
   :global(.ant-input-affix-wrapper),
-  :global(.ant-select-selector) {
+  :global(.ant-select-selector),
+  :global(.ant-input-number) {
     min-height: 36px !important;
+  }
+
+  :global(.ant-input-number-input) {
+    height: 34px;
+  }
+
+  :global(textarea.ant-input) {
+    min-height: 96px;
+    line-height: 1.5;
   }
 }

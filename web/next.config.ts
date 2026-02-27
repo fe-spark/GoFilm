@@ -2,10 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   async rewrites() {
+    if (!process.env.API_URL) {
+      return [];
+    }
     return [
       {
         source: "/api/:path*",
-        destination: "http://74.48.78.105:8080/api/:path*",
+        destination: `${process.env.API_URL}/:path*`,
       },
     ];
   },

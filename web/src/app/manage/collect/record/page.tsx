@@ -77,7 +77,7 @@ export default function FailureRecordPage() {
         setLoading(false);
       }
     },
-    [params, page.current, page.pageSize],
+    [params, page],
   );
 
   useEffect(() => {
@@ -180,6 +180,7 @@ export default function FailureRecordPage() {
       key: "action",
       align: "center",
       width: 80,
+      fixed: "right",
       render: (_, record) => (
         <Tooltip title="采集重试">
           <Button
@@ -187,7 +188,10 @@ export default function FailureRecordPage() {
             icon={<ReloadOutlined />}
             shape="circle"
             size="small"
-            style={{ background: "#52c41a", borderColor: "#52c41a" }}
+            style={{
+              background: "var(--ant-color-success)",
+              borderColor: "var(--ant-color-success)",
+            }}
             onClick={() => handleRetry(record.ID)}
           />
         </Tooltip>

@@ -1,15 +1,15 @@
 package util
 
 import (
-	"fmt"
-	"github.com/gocolly/colly/v2"
-	"github.com/gocolly/colly/v2/extensions"
 	"log"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gocolly/colly/v2"
+	"github.com/gocolly/colly/v2/extensions"
 )
 
 /*
@@ -54,14 +54,13 @@ func CreateClient() *colly.Collector {
 	// 发起请求之前会调用的方法
 	c.OnRequest(func(request *colly.Request) {
 		// 设置一些请求头信息
-		request.Headers.Set("Content-Type", "application/json;charset=UTF-8")
-		request.Headers.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+		// request.Headers.Set("Content-Type", "application/json;charset=UTF-8") // GET 请求通常不需要此头，且可能导致部分 API 报 Bad Request
+		request.Headers.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
 		//request.Headers.Set("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
 		// 请求完成后设置请求头Referer
-		if len(RefererUrl) <= 0 || !strings.Contains(RefererUrl, request.URL.Host) {
-			RefererUrl = ""
+		if len(RefererUrl) > 0 && strings.Contains(RefererUrl, request.URL.Host) {
+			request.Headers.Set("Referer", RefererUrl)
 		}
-		request.Headers.Set("Referer", RefererUrl)
 	})
 	// 请求期间报错的回调
 	c.OnError(func(response *colly.Response, err error) {
@@ -72,29 +71,32 @@ func CreateClient() *colly.Collector {
 
 // ApiGet 请求数据的方法
 func ApiGet(r *RequestInfo) {
+	// 每次请求使用独立的事件处理，防止全局回调累积
+	c := Client.Clone()
+
 	if r.Header != nil {
 		if t, err := strconv.Atoi(r.Header.Get("timeout")); err != nil && t > 0 {
-			Client.SetRequestTimeout(time.Duration(t) * time.Second)
+			c.SetRequestTimeout(time.Duration(t) * time.Second)
 		}
 	}
 	// 设置随机请求头
-	extensions.RandomUserAgent(Client)
-	//extensions.Referer(Client)
+	extensions.RandomUserAgent(c)
+
 	// 请求成功后的响应
-	Client.OnResponse(func(response *colly.Response) {
+	c.OnResponse(func(response *colly.Response) {
 		if (response.StatusCode == 200 || (response.StatusCode >= 300 && response.StatusCode <= 399)) && len(response.Body) > 0 {
-			// 将响应结构封装到 RequestInfo.Resp中
 			r.Resp = response.Body
 		} else {
 			r.Resp = []byte{}
 		}
-		// 将请求url保存到RefererUrl 用于 Header Refer属性
 		RefererUrl = response.Request.URL.String()
-		// 拿到response后输出请求url
-		//log.Println("\n请求成功: ", response.Request.URL)
 	})
-	// 处理请求参数
-	err := Client.Visit(fmt.Sprintf("%s?%s", r.Uri, r.Params.Encode()))
+
+	// 构造完整 URL
+	targetUrl := buildUrl(r.Uri, r.Params)
+
+	// 执行请求
+	err := c.Visit(targetUrl)
 	if err != nil {
 		r.Err = err.Error()
 		log.Println("获取数据失败: ", err)
@@ -103,20 +105,47 @@ func ApiGet(r *RequestInfo) {
 
 // ApiTest 处理API请求后的数据, 主测试
 func ApiTest(r *RequestInfo) error {
+	// 测试时使用完全独立的 Collector，避免状态污染
+	c := CreateClient()
+
 	// 请求成功后的响应
-	Client.OnResponse(func(response *colly.Response) {
-		// 判断请求状态
+	c.OnResponse(func(response *colly.Response) {
 		if (response.StatusCode == 200 || (response.StatusCode >= 300 && response.StatusCode <= 399)) && len(response.Body) > 0 {
-			// 将响应结构封装到 RequestInfo.Resp中
 			r.Resp = response.Body
 		} else {
 			r.Resp = []byte{}
 		}
 	})
-	// 执行请求返回错误结果
-	err := Client.Visit(fmt.Sprintf("%s?%s", r.Uri, r.Params.Encode()))
-	log.Println(err)
+
+	targetUrl := buildUrl(r.Uri, r.Params)
+	err := c.Visit(targetUrl)
+	if err != nil {
+		log.Printf("ApiTest 访问失败: %s, Error: %v\n", targetUrl, err)
+	}
 	return err
+}
+
+// buildUrl 安全地拼接 URL 和参数
+func buildUrl(base string, params url.Values) string {
+	if len(params) == 0 {
+		return base
+	}
+	u, err := url.Parse(base)
+	if err != nil {
+		// 回退方案
+		if strings.Contains(base, "?") {
+			return base + "&" + params.Encode()
+		}
+		return base + "?" + params.Encode()
+	}
+	q := u.Query()
+	for k, v := range params {
+		for _, val := range v {
+			q.Set(k, val)
+		}
+	}
+	u.RawQuery = q.Encode()
+	return u.String()
 }
 
 // 本地代理测试

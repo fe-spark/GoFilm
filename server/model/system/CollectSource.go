@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/redis/go-redis/v9"
 	"log"
+
 	"server/config"
 	"server/plugin/common/util"
 	"server/plugin/db"
+
+	"github.com/redis/go-redis/v9"
 )
 
 /*
@@ -173,5 +175,4 @@ func ExistCollectSourceList() bool {
 		return false
 	}
 	return true
-
 }

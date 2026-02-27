@@ -1,17 +1,19 @@
 package db
 
 import (
+	"server/config"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"server/config"
 )
 
 var Mdb *gorm.DB
 
 func InitMysql() (err error) {
-	// client 相关属性设置
+
+	// 2. 正常初始化 GORM 逻辑
 	Mdb, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       config.MysqlDsn,
 		DefaultStringSize:         255,   //string类型字段默认长度
@@ -29,3 +31,4 @@ func InitMysql() (err error) {
 	})
 	return
 }
+

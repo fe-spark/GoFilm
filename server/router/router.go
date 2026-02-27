@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"server/config"
 	"server/controller"
 	"server/plugin/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
@@ -72,6 +73,8 @@ func SetupRouter() *gin.Engine {
 			//collect.GET(`/star`, controller.CollectFilm)
 			collect.GET(`/del`, controller.FilmSourceDel)
 			collect.GET(`/options`, controller.GetNormalFilmSource)
+			collect.GET(`/collecting/state`, controller.CollectingState)
+			collect.GET(`/stop`, controller.StopCollect)
 
 			collect.GET(`/record/list`, controller.FailureRecordList)
 			collect.GET(`/record/retry`, controller.CollectRecover)

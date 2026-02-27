@@ -136,25 +136,27 @@ export default function Header() {
       <div className={styles.headerInner}>
         {/* PC Left: Logo & Search */}
         <div className={styles.left}>
-          <div className={styles.siteName} onClick={() => router.push("/")}>
-            {siteInfo.siteName || "GoFilm"}
-          </div>
+          {siteInfo.siteName && (
+            <div className={styles.siteName} onClick={() => router.push("/")}>
+              {siteInfo.siteName}
+            </div>
+          )}
           <div className={styles.searchGroup}>
-            <input
-              placeholder="搜索 动漫, 剧集, 电影 (按回车)"
+            <Input
+              placeholder="搜索影片、动漫、剧集..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              variant="borderless"
             />
-            <SearchOutlined
-              style={{
-                fontSize: 18,
-                color: "rgba(255,255,255,0.6)",
-                cursor: "pointer",
-                marginRight: 12,
-              }}
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
               onClick={handleSearch}
-            />
+              className={styles.searchBtn}
+            >
+              搜索
+            </Button>
           </div>
         </div>
 
