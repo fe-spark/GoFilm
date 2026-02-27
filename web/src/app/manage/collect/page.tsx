@@ -228,7 +228,7 @@ export default function CollectManagePage() {
       const resp = await ApiPost("/manage/collect/test", values);
       if (resp.code === 0) message.success(resp.msg);
       else message.error(resp.msg);
-    } catch {}
+    } catch { }
   };
 
   const openBatchCollect = async () => {
@@ -495,7 +495,7 @@ export default function CollectManagePage() {
         bordered
         size="middle"
         pagination={false}
-        scroll={{ x: "max-content", y: "calc(100vh - 320px)" }}
+        scroll={{ x: "max-content" }}
       />
 
       <div className={styles.toolbar}>

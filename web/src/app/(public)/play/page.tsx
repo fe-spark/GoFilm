@@ -121,7 +121,7 @@ function PlayerContent() {
     );
     if (currentSource && current.index < currentSource.linkList.length - 1) {
       const nextIdx = current.index + 1;
-      router.push(`/play?id=${id}&source=${currentTabId}&episode=${nextIdx}`);
+      router.replace(`/play?id=${id}&source=${currentTabId}&episode=${nextIdx}`);
     } else {
       message.info("已经是最后一集了");
     }
@@ -169,7 +169,7 @@ function PlayerContent() {
   }, [message]);
 
   const handlePlayChange = (sId: string, idx: number) => {
-    router.push(`/play?id=${id}&source=${sId}&episode=${idx}`);
+    router.replace(`/play?id=${id}&source=${sId}&episode=${idx}`);
   };
 
   if (loading) {

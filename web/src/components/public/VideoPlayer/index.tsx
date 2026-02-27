@@ -66,6 +66,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       playsInline: true,
       autoPlayback: true,
       airplay: true,
+      useSSR: typeof window === "undefined",
       customType: {
         m3u8: function (video: HTMLMediaElement, url: string) {
           if (Hls.isSupported()) {
@@ -86,6 +87,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
             video.src = url;
           }
+          // 对移动端进行原生标签补全
+          video.setAttribute("playsinline", "true");
+          video.setAttribute("webkit-playsinline", "true");
+          video.setAttribute("x5-video-player-type", "h5");
+          video.setAttribute("x5-video-player-fullscreen", "true");
         },
       },
     });
@@ -111,6 +117,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     });
 
     art.on("video:playing", () => setHasError(false));
+
+    // 移动端全屏事件接管：针对 iOS 等不支持标准全屏 API 的设备，调用原生 video.webkitEnterFullscreen
+    art.on("fullscreen", (state) => {
+      if (state && typeof document.body.requestFullscreen === "undefined") {
+        const video = art.template.$video as any;
+        if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
+        }
+      }
+    });
 
     // 小窗回正逻辑
     const observer = new IntersectionObserver(
@@ -138,8 +154,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         hlsRef.current.destroy();
         hlsRef.current = null;
       }
-      art.destroy(true);
+      if (art) {
+        if (art.mini) {
+          art.mini = false;
+        }
+        art.destroy(true);
+      }
       playerRef.current = null;
+
+      // 强制防御：如果在 unmount 时 class 残留，硬性移除
+      document.body.classList.remove("artplayer-mini");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retryCount]);

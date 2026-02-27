@@ -114,29 +114,33 @@ export default function ManageLayout({
     .map((item: any) => item.key);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout className={styles.layout} hasSider>
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
         className={styles.sider}
+        theme="light"
       >
-        <div
-          className={styles.logoWrap}
-          onClick={() => window.open("/", "_blank")}
-        >
-          {logo && <Avatar src={logo} size={30} />}
-          {!collapsed && <span className={styles.siteName}>{siteName}</span>}
+        <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+          <div
+            className={styles.logoWrap}
+            onClick={() => window.open("/", "_blank")}
+          >
+            {logo && <Avatar src={logo} size={30} />}
+            {!collapsed && <span className={styles.siteName}>{siteName}</span>}
+          </div>
+          <Menu
+            mode="inline"
+            style={{ flex: 1, overflow: "auto" }}
+            selectedKeys={[pathname]}
+            defaultOpenKeys={openKeys}
+            items={menuItems}
+            onClick={onMenuClick}
+          />
         </div>
-        <Menu
-          mode="inline"
-          selectedKeys={[pathname]}
-          defaultOpenKeys={openKeys}
-          items={menuItems}
-          onClick={onMenuClick}
-        />
       </Sider>
-      <Layout>
+      <Layout style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
         <Header className={styles.header}>
           <Space size="middle">
             <Button
@@ -159,7 +163,12 @@ export default function ManageLayout({
             </Tooltip>
           </Space>
         </Header>
-        <Content className={styles.content}>{children}</Content>
+        <Content
+          className={styles.content}
+          style={{ flex: 1, overflow: "auto" }}
+        >
+          {children}
+        </Content>
       </Layout>
     </Layout>
   );
