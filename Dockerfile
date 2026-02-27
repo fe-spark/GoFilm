@@ -1,13 +1,19 @@
-# ---- Build Stage ----
-FROM golang:1.22-alpine AS builder
+FROM golang:1.22-alpine
+
+LABEL maintainer="spark"
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
     GOARCH=amd64 \
-    GOPROXY=https://goproxy.io,direct
+    TZ=Asia/Shanghai
 
-WORKDIR /opt/server
+ARG GOPROXY=https://proxy.golang.org,direct
+ENV GOPROXY=${GOPROXY}
+
+RUN apk add --no-cache ca-certificates tzdata
+
+WORKDIR /app
 
 # 先复制依赖声明并下载（独立缓存层，代码变动不会重新下载）
 COPY ./server/go.mod ./server/go.sum ./
@@ -17,17 +23,6 @@ RUN go mod download
 ADD ./server .
 
 RUN go build -o main main.go
-
-# ---- Production Stage ----
-FROM scratch
-
-LABEL maintainer="spark"
-
-ENV TZ=Asia/Shanghai
-
-WORKDIR /app
-
-COPY --from=builder /opt/server/main .
 
 EXPOSE 3601
 

@@ -4,13 +4,13 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
+      args:
+        - API_URL=http://film:3601
     restart: always
     ports:
       - 3000:3000
     networks:
       - film-network
-    environment:
-      - API_URL=http://film:3601
     depends_on:
       film:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD", "/app/main", "-health"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:$${PORT}/index"]
       interval: 10s
       timeout: 5s
       retries: 5
