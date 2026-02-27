@@ -21,17 +21,36 @@
 
 ### 第一步：准备数据库环境
 
-在启动容器之前，请确保你已经在你的宿主机数据库中导入了相关的结构数据（MySQL 中创建 `FilmSite` 库），并配置好 Redis。默认在 `docker-compose.yml` 中配置如下属性，请根据你实际的数据库账号密码进行修改：
+在启动容器之前，请确保你已经在你的宿主机数据库中导入了相关的结构数据（MySQL 中创建 `FilmSite` 库），并配置好 Redis。
 
-```yaml
-# 在 docker-compose.yml 的 film 服务下修改数据库信息
-environment:
-  MYSQL_USER: film # 修改为你的数据库用户名
-  MYSQL_PASSWORD: XXXX # 修改为你的数据库密码
-  REDIS_PASSWORD: XXXX # 如果有 Redis 密码则修改
+### 第二步：配置环境变量
+
+将项目根目录下的 `.env.example` 复制为 `.env`，并修改为你实际的数据库配置：
+
+```bash
+cp .env.example .env
 ```
 
-### 第二步：一键构建和运行
+然后编辑 `.env` 文件：
+
+```env
+PORT=3601
+
+MYSQL_HOST=host.docker.internal
+MYSQL_PORT=3306
+MYSQL_USER=film
+MYSQL_PASSWORD=你的数据库密码
+MYSQL_DBNAME=FilmSite
+
+REDIS_HOST=host.docker.internal
+REDIS_PORT=6379
+REDIS_PASSWORD=你的Redis密码
+REDIS_DB=0
+```
+
+> **提示**: `host.docker.internal` 用于连接宿主机上的数据库。如果数据库也运行在 Docker 中，可替换为对应的容器名。
+
+### 第三步：一键构建和运行
 
 在项目**根目录**下（即存在 `docker-compose.yml` 的位置），打开终端执行以下命令：
 

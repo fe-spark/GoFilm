@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   web:
     container_name: film_web
@@ -14,7 +12,8 @@ services:
     environment:
       - API_URL=http://film:3601
     depends_on:
-      - film
+      film:
+        condition: service_healthy
 
   film:
     container_name: film_api
@@ -22,24 +21,20 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
-    environment:
-      PORT: 3601
-      MYSQL_HOST: host.docker.internal # 改为宿主机
-      MYSQL_PORT: 3306 # 改为宿主机 MySQL 端口
-      MYSQL_USER: film
-      MYSQL_PASSWORD: jKccK4ZFPSTybKXP
-      MYSQL_DBNAME: FilmSite
-      REDIS_HOST: host.docker.internal # 改为宿主机
-      REDIS_PORT: 6379 # 改为宿主机 Redis 端口
-      REDIS_PASSWORD: redis_r3Dp6C
-      REDIS_DB: 0
+    env_file:
+      - .env
     ports:
       - 3601:3601
     networks:
       - film-network
     extra_hosts:
-      - "host.docker.internal:host-gateway" # 添加这行
-    command: ["./main"]
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:$${PORT}/index"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 networks:
   film-network:

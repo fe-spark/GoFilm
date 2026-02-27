@@ -2,27 +2,53 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	"server/config"
 	"server/model/system"
 	"server/plugin/SystemInit"
 	"server/plugin/db"
 	"server/router"
-	"time"
 )
 
 func init() {
-	// 执行初始化前等待20s , 让mysql服务完成初始化指令
-	time.Sleep(time.Second * 20)
-	//初始化redis客户端
-	err := db.InitRedisConn()
-	if err != nil {
+	// 等待 Redis 就绪（最多重试 30 次，每次间隔 2s）
+	if err := waitForRedis(30, 2*time.Second); err != nil {
 		panic(err)
 	}
-	// 初始化mysql
-	err = db.InitMysql()
-	if err != nil {
+	// 等待 MySQL 就绪
+	if err := waitForMySQL(30, 2*time.Second); err != nil {
 		panic(err)
 	}
+}
+
+func waitForRedis(maxRetries int, interval time.Duration) error {
+	var err error
+	for i := 1; i <= maxRetries; i++ {
+		err = db.InitRedisConn()
+		if err == nil {
+			log.Printf("[Init] Redis 连接成功 (第 %d 次尝试)", i)
+			return nil
+		}
+		log.Printf("[Init] Redis 连接失败 (%d/%d): %v", i, maxRetries, err)
+		time.Sleep(interval)
+	}
+	return fmt.Errorf("Redis 连接失败，已重试 %d 次: %w", maxRetries, err)
+}
+
+func waitForMySQL(maxRetries int, interval time.Duration) error {
+	var err error
+	for i := 1; i <= maxRetries; i++ {
+		err = db.InitMysql()
+		if err == nil {
+			log.Printf("[Init] MySQL 连接成功 (第 %d 次尝试)", i)
+			return nil
+		}
+		log.Printf("[Init] MySQL 连接失败 (%d/%d): %v", i, maxRetries, err)
+		time.Sleep(interval)
+	}
+	return fmt.Errorf("MySQL 连接失败，已重试 %d 次: %w", maxRetries, err)
 }
 
 func main() {
