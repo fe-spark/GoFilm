@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+import os from "os";
+
+const cpuCount = os.cpus().length || 1;
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -20,6 +23,10 @@ const nextConfig: NextConfig = {
         as: "*.module.css",
       },
     },
+  },
+  experimental: {
+    // 自动获取 CPU 核心数量进行构建并行化
+    cpus: cpuCount,
   },
 };
 
