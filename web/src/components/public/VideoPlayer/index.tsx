@@ -131,6 +131,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     // 小窗回正逻辑
     const observer = new IntersectionObserver(
       ([entry]) => {
+        // 防御：全屏状态下不触发小窗转换，防止移动端旋转屏幕导致全屏退出
+        if (art.fullscreen) return;
+
         const ratio = entry.intersectionRatio;
         if (ratio < 0.1) {
           if (art.playing && !art.mini) art.mini = true;
@@ -143,6 +146,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     observer.observe(artRef.current);
 
     const handleScroll = () => {
+      if (art.fullscreen) return;
       if (window.scrollY <= 10 && art.mini) art.mini = false;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
