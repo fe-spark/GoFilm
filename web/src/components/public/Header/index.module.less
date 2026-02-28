@@ -76,21 +76,21 @@
     background: var(--public-surface-hover);
   }
 
-  :global(.ant-input),
-  :global(.ant-input-affix-wrapper) {
-    background: transparent !important;
-    color: var(--public-text-1) !important;
-    height: 40px;
-    font-size: 15px;
-    border: none !important;
-    box-shadow: none !important;
-    flex: 1;
-    padding-left: 10px;
+  // :global(.ant-input),
+  // :global(.ant-input-affix-wrapper) {
+  //   background: transparent !important;
+  //   color: var(--public-text-1) !important;
+  //   height: 40px;
+  //   font-size: 15px;
+  //   border: none !important;
+  //   box-shadow: none !important;
+  //   flex: 1;
+  //   padding-left: 10px;
 
-    &::placeholder {
-      color: var(--public-text-6) !important;
-    }
-  }
+  //   &::placeholder {
+  //     color: var(--public-text-6) !important;
+  //   }
+  // }
 
   .searchBtn {
     height: 40px;
@@ -159,6 +159,12 @@
   }
 }
 
+.historyWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .historyBtn {
   color: var(--public-text-3);
   font-size: 20px;
@@ -166,6 +172,7 @@
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
+  z-index: 2;
 
   &:hover {
     color: #fa8c16;
@@ -173,25 +180,29 @@
   }
 }
 
-.historyOverlay {
-  width: 320px;
-}
-
 .historyPanel {
+  position: absolute;
+  top: 100%;
+  right: 0;
   width: 320px;
+  background: color-mix(in srgb, var(--public-page-bg) 88%, transparent);
+  backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.1);
+  border: 1px solid var(--public-border-2);
+  box-shadow: var(--public-shadow-lg);
   border-radius: 14px;
-}
+  margin-top: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  overflow: hidden;
+  z-index: 1001;
 
-.historyOverlay {
-  :global(.ant-popover-inner) {
-    padding: 0 !important;
-    background: color-mix(in srgb, var(--public-surface-2) 40%, transparent) !important;
-    backdrop-filter: blur(28px) saturate(170%) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(170%) !important;
-    border: 1px solid var(--public-border-2) !important;
-    box-shadow: var(--public-shadow-md) !important;
-    border-radius: 14px !important;
-    overflow: hidden !important;
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -237,21 +248,27 @@
   padding: 12px 20px;
   gap: 12px;
   align-items: center;
-  color: var(--public-text-3);
+  color: var(--public-text-2);
   transition: all 0.3s ease;
 
   &:hover {
-    background: var(--public-surface-2);
+    background: var(--public-surface-hover);
     color: #fa8c16;
     padding-left: 24px;
+
+    .filmTitle {
+      color: #fa8c16;
+    }
   }
 
   .filmTitle {
     flex: 1;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--public-text-1);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    transition: color 0.3s ease;
   }
 
   .episode {
@@ -260,7 +277,8 @@
     background: var(--public-surface-3);
     padding: 2px 6px;
     border-radius: 4px;
-    color: var(--public-text-6);
+    color: var(--public-text-3);
+    font-weight: 600;
   }
 }
 
@@ -310,6 +328,16 @@
       line-height: 56px;
       flex-shrink: 0;
     }
+  }
+
+  .historyPanel {
+    position: fixed;
+    top: 56px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+    margin: 0;
   }
 
   .mobileSearchBtn {

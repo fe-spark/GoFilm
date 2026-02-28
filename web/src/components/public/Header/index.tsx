@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input, Button, Popover, Empty } from "antd";
 import {
@@ -92,8 +92,27 @@ export default function Header() {
     router.push(`/search?search=${encodeURIComponent(keyword)}`);
   };
 
+  const [showHistory, setShowHistory] = useState(false);
+  const historyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (historyRef.current && !historyRef.current.contains(event.target as Node)) {
+        setShowHistory(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (showHistory) {
+      loadHistory();
+    }
+  }, [showHistory, loadHistory]);
+
   const historyContent = (
-    <div className={styles.historyPanel}>
+    <div className={`${styles.historyPanel} ${showHistory ? styles.show : ""}`}>
       <div className={styles.historyHeader}>
         <HistoryOutlined className={styles.icon} />
         <span className={styles.title}>历史观看记录</span>
@@ -110,7 +129,10 @@ export default function Header() {
             <div
               key={idx}
               className={styles.historyItem}
-              onClick={() => router.push(item.link)}
+              onClick={() => {
+                router.push(item.link);
+                setShowHistory(false);
+              }}
               style={{ cursor: "pointer" }}
             >
               <span className={styles.filmTitle}>{item.name}</span>
@@ -171,18 +193,12 @@ export default function Header() {
             ))}
           </div>
 
-          <Popover
-            content={historyContent}
-            trigger="hover"
-            placement="bottomRight"
-            onOpenChange={(open) => open && loadHistory()}
-            arrow={false}
-            overlayClassName={styles.historyOverlay}
-          >
-            <div className={styles.historyBtn}>
+          <div className={styles.historyWrapper} ref={historyRef}>
+            <div className={styles.historyBtn} onClick={() => setShowHistory(!showHistory)}>
               <HistoryOutlined />
             </div>
-          </Popover>
+            {historyContent}
+          </div>
 
           <div
             className={styles.mobileSearchBtn}
