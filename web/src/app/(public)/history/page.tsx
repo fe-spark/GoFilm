@@ -51,7 +51,7 @@ export default function HistoryPage() {
         );
         loadHistory();
         message.success("已删除该条记录");
-      } catch (e) {}
+      } catch (e) { }
     }
   };
 
@@ -90,7 +90,10 @@ export default function HistoryPage() {
                     )}
                   </span>
                 </div>
-                <div className={styles.episode}>{item.episode}</div>
+                <div className={styles.episode}>
+                  {item.sourceName && <span className={styles.sourceTag}>{item.sourceName}</span>}
+                  {item.episode}
+                </div>
                 <div className={styles.progress}>
                   {formatProgress(item.currentTime, item.duration)}
                 </div>

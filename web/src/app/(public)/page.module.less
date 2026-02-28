@@ -31,17 +31,21 @@
       li {
         width: 24px !important;
         margin: 0 6px !important;
+
         button {
           height: 6px !important;
           border-radius: 3px !important;
           background: var(--public-text-6) !important;
           transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+
           &:hover {
             background: var(--public-text-4) !important;
           }
         }
+
         &.slick-active {
           width: 60px !important;
+
           button {
             background: #fa8c16 !important;
             box-shadow: 0 0 15px rgba(250, 140, 22, 0.6);
@@ -68,8 +72,7 @@
   height: 100%;
   background-size: cover;
   background-position: center 15%;
-  animation: kenBurns 20s infinite alternate
-    cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  animation: kenBurns 20s infinite alternate cubic-bezier(0.445, 0.05, 0.55, 0.95);
   transform: scale(1);
 }
 
@@ -77,6 +80,7 @@
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(1.1);
   }
@@ -95,16 +99,15 @@
   padding: 0 80px;
 }
 
-// Info Overlay
 .heroInfo {
   max-width: 500px;
-  padding: 28px 32px;
-  border-radius: 16px;
-  // Use glassmorphism only on desktop for premium feel
-  background: var(--public-surface-2);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--public-border-2);
-  box-shadow: var(--public-shadow-md);
+  padding: 32px 36px;
+  border-radius: 20px;
+  // Deep dark glass for best contrast in all themes
+  background: rgba(10, 11, 16, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   z-index: 2;
   transition: transform 0.3s ease;
 
@@ -131,11 +134,11 @@
     font-weight: 800;
     margin-bottom: 8px;
     line-height: 1.1;
-    color: var(--public-text-1);
+    color: #ffffff;
     letter-spacing: -1.5px;
-    text-shadow: 0 5px 20px color-mix(in srgb, var(--public-page-bg) 80%, transparent);
+    text-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
     animation: slideUpFade 0.8s backwards 0.4s;
-    background: linear-gradient(to bottom, var(--public-text-1), var(--public-text-4));
+    background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.6));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -147,14 +150,14 @@
     gap: 12px;
     font-size: 15px;
     font-weight: 500;
-    color: var(--public-text-2);
+    color: rgba(255, 255, 255, 0.85);
     margin-bottom: 24px;
     animation: slideUpFade 0.8s backwards 0.6s;
 
     .divider {
       width: 1px;
       height: 14px;
-      background: var(--public-border-2);
+      background: rgba(255, 255, 255, 0.2);
     }
   }
 
@@ -172,6 +175,7 @@
       font-weight: 700;
       border-radius: 10px;
       transition: all 0.3s;
+
       &:hover {
         background: #ffa940 !important;
         transform: translateY(-3px);
@@ -185,14 +189,15 @@
       font-size: 15px;
       font-weight: 600;
       border-radius: 10px;
-      border: 2px solid var(--public-border-3);
-      color: var(--public-text-1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
       background: transparent;
       transition: all 0.3s;
+
       &:hover {
-        background: var(--public-surface-3) !important;
-        color: var(--public-text-1) !important;
-        border-color: var(--public-text-1) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
         transform: translateY(-3px);
       }
     }
@@ -204,6 +209,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -214,11 +220,11 @@
 .customArrow {
   width: 60px;
   height: 60px;
-  background: var(--public-surface-3);
+  background: rgba(10, 11, 16, 0.4);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--public-border-3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  color: var(--public-text-1);
+  color: #ffffff;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -297,6 +303,7 @@
       font-size: 14px;
       font-weight: 500;
       transition: color 0.2s;
+
       &:hover {
         color: #fa8c16;
       }
@@ -365,6 +372,7 @@
   .heroOverlay {
     padding: 0 40px;
   }
+
   .customArrow {
     width: 48px;
     height: 48px;
@@ -387,6 +395,7 @@
       .slick-slide {
         height: 400px;
       }
+
       .slick-dots {
         bottom: 20px !important;
       }
@@ -429,6 +438,7 @@
     }
 
     .heroActions {
+
       .playBtn,
       .detailBtn {
         height: 44px;
@@ -445,10 +455,12 @@
   .sectionHeader {
     .left {
       font-size: 18px;
+
       .icon {
         font-size: 24px;
       }
     }
+
     .nav {
       display: none;
     }

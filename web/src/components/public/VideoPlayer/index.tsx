@@ -45,16 +45,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   // 核心初始化 Effect
   useEffect(() => {
-    if (!artRef.current) return;
-
     const art = new Artplayer({
       container: artRef.current,
+      id: "gofilm-player",
       url: src,
       poster: poster || "",
       autoplay,
-      theme: "var(--primary-color)",
+      theme: "#fa8c16", // 直接使用 Hex 色值，Artplayer 内部无法解析 CSS 变量
       volume: 0.7,
-      pip: true,
+      pip: false,
       autoMini: false,
       setting: true,
       playbackRate: true,
@@ -98,6 +97,32 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     playerRef.current = art;
 
+    // 破解 autoMini 延迟：实现毫秒级响应的小窗触发
+    let rafId: number;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    if (!isMobile) {
+      const checkMiniTrigger = () => {
+        if (!artRef.current || !art) return;
+
+        // 全屏场景下禁用小窗切换
+        if (art.fullscreen || art.fullscreenWeb) {
+          if (art.mini) art.mini = false;
+          rafId = requestAnimationFrame(checkMiniTrigger);
+          return;
+        }
+
+        const rect = artRef.current.getBoundingClientRect();
+        // 阈值破解：底部剩余 100px 时立即开启，顶部进入 -50px 时立刻关闭
+        if (rect.bottom < 100) {
+          if (art.playing && !art.mini) art.mini = true;
+        } else if (rect.top > -50) {
+          if (art.mini) art.mini = false;
+        }
+        rafId = requestAnimationFrame(checkMiniTrigger);
+      };
+      rafId = requestAnimationFrame(checkMiniTrigger);
+    }
+
     if (initialTime > 0) {
       art.on("ready", () => {
         art.currentTime = initialTime;
@@ -128,46 +153,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       }
     });
 
-    // 小窗回正逻辑
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // 防御：全屏状态下不触发小窗转换，防止移动端旋转屏幕导致全屏退出
-        if (art.fullscreen) return;
-
-        const ratio = entry.intersectionRatio;
-        if (ratio < 0.1) {
-          if (art.playing && !art.mini) art.mini = true;
-        } else if (ratio > 0.3) {
-          if (art.mini) art.mini = false;
-        }
-      },
-      { threshold: [0, 0.1, 0.3, 1.0] },
-    );
-    observer.observe(artRef.current);
-
-    const handleScroll = () => {
-      if (art.fullscreen) return;
-      if (window.scrollY <= 10 && art.mini) art.mini = false;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
     return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
       if (hlsRef.current) {
         hlsRef.current.destroy();
         hlsRef.current = null;
       }
       if (art) {
-        if (art.mini) {
-          art.mini = false;
-        }
+        if (art.mini) art.mini = false;
         art.destroy(true);
       }
       playerRef.current = null;
-
-      // 强制防御：如果在 unmount 时 class 残留，硬性移除
-      document.body.classList.remove("artplayer-mini");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retryCount]);

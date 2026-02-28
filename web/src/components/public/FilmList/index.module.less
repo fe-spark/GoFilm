@@ -17,7 +17,7 @@
   cursor: pointer;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: transform;
-  min-width: 0; 
+  min-width: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -29,12 +29,15 @@
       box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.8),
         0 0 0 1px rgba(var(--primary-color-rgb), 0.3);
+
       .poster {
         transform: scale(1.1);
       }
+
       .overlay {
         opacity: 1;
         visibility: visible;
+
         .overlayContent {
           transform: translateY(0);
         }
@@ -198,7 +201,8 @@
   flex-direction: column;
   gap: 4px;
   padding: 0 4px;
-  overflow: hidden; /* 防止文字溢出 */
+  overflow: hidden;
+  /* 防止文字溢出 */
 
   .name {
     font-size: 15px;
@@ -241,8 +245,116 @@
     .name {
       font-size: 13px;
     }
+
     .subText {
       font-size: 11px;
     }
+  }
+}
+
+// Skeleton Loading Styles
+.skeleton {
+  pointer-events: none;
+
+  // Base background that works for dark mode by default
+  --sk-bg: var(--public-surface-3);
+  --sk-shimmer: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+
+  // Focus on Light Mode visibility
+  :global(html[data-theme="light"]) & {
+    --sk-bg: #e8ebf0;
+    --sk-shimmer: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.6),
+        transparent);
+  }
+
+  .skeletonPoster {
+    width: 100%;
+    height: 100%;
+    background: var(--sk-bg);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--sk-shimmer);
+      animation: skeletonPulse 1.5s infinite;
+    }
+  }
+
+  .skeletonName {
+    width: 70%;
+    height: 14px;
+    background: var(--sk-bg);
+    border-radius: 4px;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--sk-shimmer);
+      animation: skeletonPulse 1.5s infinite;
+    }
+  }
+
+  .skeletonSub {
+    width: 40%;
+    height: 12px;
+    background: var(--sk-bg);
+    border-radius: 4px;
+    margin-top: 6px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--sk-shimmer);
+      animation: skeletonPulse 1.5s infinite;
+    }
+  }
+
+  &.absoluteSkeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    border-radius: inherit;
+  }
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
   }
 }

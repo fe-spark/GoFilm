@@ -56,10 +56,18 @@ export default function GlobalThemeProvider({
   children: React.ReactNode;
   fontFamily: string;
 }) {
-  const [mode, setMode] = useState<ThemeMode>(getSavedMode);
-  const [effective, setEffective] = useState<"dark" | "light">(() =>
-    resolveEffective(mode),
-  );
+  // 为了避免服务端与客户端初始渲染不一致导致的 Hydration 报错，
+  // 初始状态强制设为服务端默认值 ("system" / "dark")，然后在 useEffect 中同步本地存储
+  const [mode, setMode] = useState<ThemeMode>("system");
+  const [effective, setEffective] = useState<"dark" | "light">("dark");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const saved = getSavedMode();
+    setMode(saved);
+    setEffective(resolveEffective(saved));
+  }, []);
 
   const getCssVar = useCallback(
     (varName: string) => {

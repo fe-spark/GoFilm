@@ -20,7 +20,6 @@ function ClassifyContent() {
   const fetchData = useCallback(async () => {
     if (!pid) return;
     setLoading(true);
-    setData(null);
     try {
       const resp = await ApiGet("/filmClassify", { Pid: pid });
       if (resp.code === 0) {
@@ -37,7 +36,7 @@ function ClassifyContent() {
     void fetchData();
   }, [fetchData]);
 
-  if (loading) {
+  if (loading && !data) {
     return <AppLoading />;
   }
 
@@ -58,7 +57,12 @@ function ClassifyContent() {
           更多 &gt;
         </a>
       </div>
-      <FilmList list={list} className={styles.classifyGrid} />
+      <FilmList
+        list={list}
+        loading={loading}
+        skeletonCount={7}
+        className={styles.classifyGrid}
+      />
     </div>
   );
 

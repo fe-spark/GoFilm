@@ -19,7 +19,6 @@ function ClassifySearchContent() {
 
   const fetchResults = useCallback(async () => {
     setLoading(true);
-    setData(null); // Explicitly clear old data to force complete unmount and natural top-scroll
     const params: any = {};
     searchParams.forEach((value, key) => {
       params[key] = value;
@@ -91,7 +90,11 @@ function ClassifySearchContent() {
       </div>
 
       <div className={styles.content}>
-        <FilmList list={safeList} className={styles.classifyGrid} />
+        <FilmList
+          list={safeList}
+          loading={loading}
+          className={styles.classifyGrid}
+        />
       </div>
 
       {safeList.length > 0 && (

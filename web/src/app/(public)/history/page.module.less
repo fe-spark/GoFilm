@@ -49,6 +49,7 @@
       margin: 0;
       color: var(--public-text-1);
       cursor: pointer;
+
       &:hover {
         color: #fa8c16;
       }
@@ -75,6 +76,20 @@
     .episode {
       font-size: 13px;
       color: var(--public-text-5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .sourceTag {
+        background: var(--primary-1);
+        color: #fa8c16;
+        border: 1px solid #ffd591;
+        padding: 0 6px;
+        border-radius: 4px;
+        font-size: 11px;
+        line-height: 18px;
+        font-weight: 500;
+      }
     }
   }
 
@@ -97,21 +112,26 @@
   .title {
     font-size: 20px;
   }
+
   .historyItem {
     gap: 12px;
     padding: 8px;
+
     .poster {
       width: 80px;
       height: 110px;
     }
+
     .info {
       h3 {
         font-size: 15px;
       }
+
       .meta {
         font-size: 11px;
         gap: 8px;
       }
+
       .progress,
       .episode {
         font-size: 11px;

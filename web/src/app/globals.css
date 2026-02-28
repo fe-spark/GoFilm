@@ -24,24 +24,18 @@
   --public-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
   --public-shadow-md: 0 10px 40px rgba(0, 0, 0, 0.2);
   --public-shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.6);
-  --public-overlay-main: linear-gradient(
-    to top,
-    rgba(10, 11, 16, 0.98) 0%,
-    rgba(10, 11, 16, 0.8) 50%,
-    rgba(10, 11, 16, 0.4) 100%
-  );
-  --public-overlay-card: linear-gradient(
-    to top,
-    rgba(10, 11, 16, 0.98) 0%,
-    rgba(10, 11, 16, 0.8) 50%,
-    rgba(10, 11, 16, 0.4) 100%
-  );
-  --public-overlay-banner: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
-  );
+  --public-overlay-main: linear-gradient(to top,
+      rgba(10, 11, 16, 0.98) 0%,
+      rgba(10, 11, 16, 0.8) 50%,
+      rgba(10, 11, 16, 0.4) 100%);
+  --public-overlay-card: linear-gradient(to top,
+      rgba(10, 11, 16, 0.98) 0%,
+      rgba(10, 11, 16, 0.8) 50%,
+      rgba(10, 11, 16, 0.4) 100%);
+  --public-overlay-banner: linear-gradient(to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%);
   --text-main-light: #101218;
   --text-main-dark: #ffffff;
   --text-secondary-light: rgba(16, 18, 24, 0.7);
@@ -71,24 +65,18 @@
     --public-shadow-sm: 0 6px 18px rgba(16, 18, 24, 0.08);
     --public-shadow-md: 0 10px 30px rgba(16, 18, 24, 0.1);
     --public-shadow-lg: 0 18px 40px rgba(16, 18, 24, 0.14);
-    --public-overlay-main: linear-gradient(
-      to top,
-      rgba(245, 247, 251, 0.96) 0%,
-      rgba(245, 247, 251, 0.75) 55%,
-      rgba(245, 247, 251, 0.1) 100%
-    );
-    --public-overlay-card: linear-gradient(
-      to top,
-      rgba(10, 11, 16, 0.88) 0%,
-      rgba(10, 11, 16, 0.56) 52%,
-      rgba(10, 11, 16, 0.12) 100%
-    );
-    --public-overlay-banner: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.4) 50%,
-      transparent 100%
-    );
+    --public-overlay-main: linear-gradient(to top,
+        rgba(245, 247, 251, 0.96) 0%,
+        rgba(245, 247, 251, 0.75) 55%,
+        rgba(245, 247, 251, 0.1) 100%);
+    --public-overlay-card: linear-gradient(to top,
+        rgba(10, 11, 16, 0.88) 0%,
+        rgba(10, 11, 16, 0.56) 52%,
+        rgba(10, 11, 16, 0.12) 100%);
+    --public-overlay-banner: linear-gradient(to top,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        transparent 100%);
   }
 }
 
@@ -111,24 +99,18 @@ html[data-theme="dark"] {
   --public-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
   --public-shadow-md: 0 10px 40px rgba(0, 0, 0, 0.2);
   --public-shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.6);
-  --public-overlay-main: linear-gradient(
-    to top,
-    rgba(10, 11, 16, 0.98) 0%,
-    rgba(10, 11, 16, 0.8) 50%,
-    rgba(10, 11, 16, 0.4) 100%
-  );
-  --public-overlay-card: linear-gradient(
-    to top,
-    rgba(10, 11, 16, 0.88) 0%,
-    rgba(10, 11, 16, 0.56) 52%,
-    rgba(10, 11, 16, 0.12) 100%
-  );
-  --public-overlay-banner: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
-  );
+  --public-overlay-main: linear-gradient(to top,
+      rgba(10, 11, 16, 0.98) 0%,
+      rgba(10, 11, 16, 0.8) 50%,
+      rgba(10, 11, 16, 0.4) 100%);
+  --public-overlay-card: linear-gradient(to top,
+      rgba(10, 11, 16, 0.88) 0%,
+      rgba(10, 11, 16, 0.56) 52%,
+      rgba(10, 11, 16, 0.12) 100%);
+  --public-overlay-banner: linear-gradient(to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%);
 }
 
 html[data-theme="light"] {
@@ -150,30 +132,25 @@ html[data-theme="light"] {
   --public-shadow-sm: 0 6px 18px rgba(16, 18, 24, 0.08);
   --public-shadow-md: 0 10px 30px rgba(16, 18, 24, 0.1);
   --public-shadow-lg: 0 18px 40px rgba(16, 18, 24, 0.14);
-  --public-overlay-main: linear-gradient(
-    to top,
-    rgba(245, 247, 251, 0.96) 0%,
-    rgba(245, 247, 251, 0.75) 55%,
-    rgba(245, 247, 251, 0.1) 100%
-  );
-  --public-overlay-card: linear-gradient(
-    to top,
-    rgba(10, 11, 16, 0.98) 0%,
-    rgba(10, 11, 16, 0.8) 50%,
-    rgba(10, 11, 16, 0.4) 100%
-  );
-  --public-overlay-banner: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    transparent 100%
-  );
+  --public-overlay-main: linear-gradient(to top,
+      rgba(245, 247, 251, 0.96) 0%,
+      rgba(245, 247, 251, 0.75) 55%,
+      rgba(245, 247, 251, 0.1) 100%);
+  --public-overlay-card: linear-gradient(to top,
+      rgba(10, 11, 16, 0.98) 0%,
+      rgba(10, 11, 16, 0.8) 50%,
+      rgba(10, 11, 16, 0.4) 100%);
+  --public-overlay-banner: linear-gradient(to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: none;
 }
 
 html,
