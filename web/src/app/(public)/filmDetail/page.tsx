@@ -27,38 +27,6 @@ function FilmDetailContent() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const updateHistory = useCallback((detail: any) => {
-    const raw = cookieUtil.getCookie(COOKIE_KEY_MAP.FILM_HISTORY);
-    let historyMap: any = {};
-    if (raw) {
-      try {
-        historyMap = JSON.parse(raw);
-      } catch (e) { }
-    }
-
-    historyMap[detail.id] = {
-      id: detail.id,
-      name: detail.name,
-      episode: detail.descriptor.remarks || "查看详情",
-      link: `/filmDetail?link=${detail.id}`,
-      timeStamp: Date.now(),
-    };
-
-    // 限制历史记录数量为 50 条
-    const keys = Object.keys(historyMap);
-    if (keys.length > 50) {
-      const sortedKeys = keys.sort(
-        (a, b) => historyMap[b].timeStamp - historyMap[a].timeStamp,
-      );
-      const toDelete = sortedKeys.slice(50);
-      toDelete.forEach((k) => delete historyMap[k]);
-    }
-
-    cookieUtil.setCookie(
-      COOKIE_KEY_MAP.FILM_HISTORY,
-      JSON.stringify(historyMap),
-    );
-  }, []);
 
   useEffect(() => {
     if (!link) return;
@@ -79,7 +47,6 @@ function FilmDetailContent() {
             detail.descriptor.content = content.trim();
           }
           setData(resp.data);
-          updateHistory(detail);
         } else {
           message.error(resp.msg);
         }
@@ -89,7 +56,7 @@ function FilmDetailContent() {
     };
 
     void load();
-  }, [link, message, updateHistory]);
+  }, [link, message]);
 
   const handlePlayClick = () => {
     // 尝试从历史中获取播放进度
