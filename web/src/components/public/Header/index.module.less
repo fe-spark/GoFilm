@@ -182,6 +182,19 @@
   border-radius: 14px;
 }
 
+.historyOverlay {
+  :global(.ant-popover-inner) {
+    padding: 0 !important;
+    background: color-mix(in srgb, var(--public-surface-2) 40%, transparent) !important;
+    backdrop-filter: blur(28px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(170%) !important;
+    border: 1px solid var(--public-border-2) !important;
+    box-shadow: var(--public-shadow-md) !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+}
+
 .historyHeader {
   padding: 16px 20px;
   display: flex;

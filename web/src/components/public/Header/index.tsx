@@ -177,26 +177,7 @@ export default function Header() {
             placement="bottomRight"
             onOpenChange={(open) => open && loadHistory()}
             arrow={false}
-            classNames={{ root: styles.historyOverlay }}
-            styles={{
-              root: {
-                backdropFilter: "blur(28px) saturate(170%)",
-                WebkitBackdropFilter: "blur(28px) saturate(170%)",
-                borderRadius: 14,
-                overflow: "hidden",
-              } as React.CSSProperties,
-              container: {
-                padding: 0,
-                background: "rgba(18, 22, 32, 0.38)",
-                border: "1px solid var(--public-border-2)",
-                boxShadow: "var(--public-shadow-md)",
-                borderRadius: 14,
-                overflow: "hidden",
-              },
-              content: {
-                padding: 0,
-              },
-            }}
+            overlayClassName={styles.historyOverlay}
           >
             <div className={styles.historyBtn}>
               <HistoryOutlined />
