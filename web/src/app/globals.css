@@ -151,6 +151,16 @@ html[data-theme="light"] {
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent unwanted selection/callouts on interactive elements for native feel */
+a,
+button,
+[role="button"],
+.interactive {
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 html,

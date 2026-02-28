@@ -36,6 +36,7 @@ function PlayerContent() {
   const [currentTabId, setCurrentTabId] = useState("");
   const [current, setCurrent] = useState<any>(null);
   const [autoplay, setAutoplay] = useState(true);
+  const [playerError, setPlayerError] = useState(false);
 
   const activeEpRef = useRef<HTMLDivElement>(null);
   const activeTabRef = useRef<HTMLDivElement>(null);
@@ -60,6 +61,7 @@ function PlayerContent() {
           setData(resp.data);
           setCurrent({ index: resp.data.currentEpisode, ...resp.data.current });
           setCurrentTabId(resp.data.currentPlayFrom);
+          setPlayerError(false); // Reset error state on new resource load
         } else {
           message.error(resp.msg);
         }
@@ -186,7 +188,7 @@ function PlayerContent() {
             </div>
           </div>
 
-          <div className={styles.playerWrapper}>
+          <div className={`${styles.playerWrapper} ${playerError ? styles.isPlayerError : ""}`}>
             {current?.link && (
               <VideoPlayer
                 key={current.link}
@@ -195,7 +197,10 @@ function PlayerContent() {
                 autoplay={autoplay}
                 onEnded={() => autoplay && handlePlayNext()}
                 onTimeUpdate={handleTimeUpdate}
-                onError={() => message.error("该视频源加载失败，请尝试切换播放源。")}
+                onError={() => {
+                  setPlayerError(true);
+                  message.error("该视频源加载失败，请尝试切换播放源。");
+                }}
               />
             )}
           </div>

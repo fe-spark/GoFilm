@@ -154,8 +154,8 @@
   aspect-ratio: 16 / 9;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: var(--public-shadow-lg);
-  border: 1px solid var(--public-border-3);
+  display: grid;
+  place-items: stretch;
 }
 
 .sidebar {
@@ -426,6 +426,15 @@
     border: none;
     height: auto;
     aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: stretch;
+    min-height: 210px;
+
+    &.isPlayerError {
+      aspect-ratio: auto;
+      height: auto;
+      min-height: 320px;
+    }
   }
 
   .mainContent {

@@ -32,7 +32,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const menuItems: MenuItem[] = [
   {
-    key: "/manage/system",
+    key: "sub-system",
     icon: <HomeOutlined />,
     label: "网站管理",
     children: [
@@ -41,7 +41,7 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    key: "/manage/collect",
+    key: "sub-collect",
     icon: <ThunderboltOutlined />,
     label: "采集管理",
     children: [
@@ -50,13 +50,13 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    key: "/manage/cron",
+    key: "sub-cron",
     icon: <ClockCircleOutlined />,
     label: "定时任务",
     children: [{ key: "/manage/cron", label: "任务管理" }],
   },
   {
-    key: "/manage/film",
+    key: "sub-film",
     icon: <VideoCameraOutlined />,
     label: "影片管理",
     children: [
