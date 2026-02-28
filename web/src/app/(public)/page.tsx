@@ -214,8 +214,9 @@ export default function HomePage() {
             <div className={styles.sectionBody}>
               <div className={styles.filmGrid}>
                 <FilmList
-                  list={section.movies.slice(0, 14)}
+                  list={section.movies.slice(0, 12)}
                   className={styles.homeList}
+                  col={6}
                 />
               </div>
 

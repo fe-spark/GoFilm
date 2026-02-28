@@ -1,12 +1,15 @@
-.content {
-  display: grid;
-  // 大屏基准：固定 7 列
-  grid-template-columns: repeat(
-    7,
-    minmax(0, 1fr)
-  ); /* 关键：使用 minmax(0, 1fr) 防止内容撑开 */
-  gap: 24px;
-  width: 100%;
+.col7 {
+  @media (min-width: 1600px) {
+    flex: 0 0 14.2857% !important;
+    max-width: 14.2857% !important;
+  }
+}
+
+.col5 {
+  @media (min-width: 1200px) and (max-width: 1599px) {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+  }
 }
 
 .item {
@@ -14,7 +17,10 @@
   cursor: pointer;
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   will-change: transform;
-  min-width: 0; /* 关键：允许单元格在 Grid 轨道缩小时同步缩小 */
+  min-width: 0; 
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     transform: translateY(-8px) scale(1.02);
@@ -214,27 +220,8 @@
   }
 }
 
-// 响应式设计：随屏幕缩小逐步分档减少列数
-@media (max-width: 1440px) {
-  .content {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 20px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .content {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 16px;
-  }
-}
-
+// UI specific responsive adjustments
 @media (max-width: 768px) {
-  .content {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-
   .overlay {
     display: none;
   }
@@ -257,12 +244,5 @@
     .subText {
       font-size: 11px;
     }
-  }
-}
-
-@media (max-width: 480px) {
-  .content {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
   }
 }
