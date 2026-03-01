@@ -2,6 +2,7 @@ package logic
 
 import (
 	"fmt"
+	"server/config"
 	"server/model/collect"
 	"server/model/system"
 	"server/plugin/db"
@@ -89,7 +90,7 @@ func (p *ProvideLogic) GetVodDetail(ids []string) []collect.FilmDetail {
 	var detailList []collect.FilmDetail
 
 	for _, idStr := range ids {
-		idInt, err := strconv.Atoi(idStr)
+		_, err := strconv.Atoi(idStr)
 		if err != nil {
 			continue
 		}
@@ -99,16 +100,19 @@ func (p *ProvideLogic) GetVodDetail(ids []string) []collect.FilmDetail {
 		}
 
 		// 通过 IndexLogic 获取结合了多线路的影片详细信息
-		movieDetailVo := IL.GetFilmDetail(idInt)
+		movieDetail := system.GetDetailByKey(fmt.Sprintf(config.MovieDetailKey, s.Cid, s.Mid))
 
-		// 处理播放源和播放链接
+		// 处理播放源和播放链接 (安全提取，防止越界或空指针引发 panic)
 		var playFromList []string
 		var playUrlList []string
 
-		for _, source := range movieDetailVo.List {
-			playFromList = append(playFromList, source.Name) // 播放源名称
+		for i, sourceName := range movieDetail.PlayFrom {
+			if i >= len(movieDetail.PlayList) {
+				continue
+			}
+			playFromList = append(playFromList, sourceName) // 播放源名称
 			var linkStrs []string
-			for _, link := range source.LinkList {
+			for _, link := range movieDetail.PlayList[i] {
 				// 类似 "第1集$http://xxx.m3u8"
 				linkStrs = append(linkStrs, fmt.Sprintf("%s$%s", link.Episode, strings.ReplaceAll(link.Link, "$", "")))
 			}
@@ -126,21 +130,21 @@ func (p *ProvideLogic) GetVodDetail(ids []string) []collect.FilmDetail {
 			VodRemarks:     s.Remarks,
 			VodPlayFrom:    strings.Join(playFromList, "$$$"),
 			VodPlayURL:     strings.Join(playUrlList, "$$$"),
-			VodPic:         movieDetailVo.Picture,
-			VodSub:         movieDetailVo.SubTitle,
-			VodClass:       movieDetailVo.ClassTag,
-			VodActor:       movieDetailVo.Actor,
-			VodDirector:    movieDetailVo.Director,
-			VodWriter:      movieDetailVo.Writer,
-			VodBlurb:       movieDetailVo.Blurb,
-			VodPubDate:     movieDetailVo.ReleaseDate,
-			VodArea:        movieDetailVo.Area,
-			VodLang:        movieDetailVo.Language,
-			VodYear:        fmt.Sprintf("%d", movieDetailVo.Year),
-			VodState:       movieDetailVo.State,
+			VodPic:         movieDetail.Picture,
+			VodSub:         movieDetail.SubTitle,
+			VodClass:       movieDetail.ClassTag,
+			VodActor:       movieDetail.Actor,
+			VodDirector:    movieDetail.Director,
+			VodWriter:      movieDetail.Writer,
+			VodBlurb:       movieDetail.Blurb,
+			VodPubDate:     movieDetail.ReleaseDate,
+			VodArea:        movieDetail.Area,
+			VodLang:        movieDetail.Language,
+			VodYear:        fmt.Sprintf("%d", movieDetail.Year),
+			VodState:       movieDetail.State,
 			VodHits:        s.Hits,
-			VodScore:       fmt.Sprintf("%.1f", movieDetailVo.DbScore),
-			VodContent:     movieDetailVo.Content,
+			VodScore:       fmt.Sprintf("%.1f", movieDetail.DbScore),
+			VodContent:     movieDetail.Content,
 		}
 		detailList = append(detailList, detail)
 	}
