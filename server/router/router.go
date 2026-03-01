@@ -129,11 +129,10 @@ func SetupRouter() *gin.Engine {
 	}
 
 	// 供第三方采集的API
-	//provideRoute := r.Group(`/provide`)
-	//{
-	//	provideRoute.GET(`/vod`, controller.HandleProvide)
-	//	provideRoute.GET(`/vod/xml`, middleware.AddXmlHeader(), controller.HandleProvideXml)
-	//}
+	provideRoute := r.Group(`/provide`)
+	{
+		provideRoute.GET(`/vod`, controller.HandleProvide)
+	}
 
 	return r
 }

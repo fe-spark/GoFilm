@@ -12,8 +12,8 @@ const (
 	// OriginalFilmDetailKey 采集时原始数据存储key
 	OriginalFilmDetailKey = "OriginalResource:FilmDetail:Id%d"
 	FilmClassKey          = "OriginalResource:FilmClass"
-	PlayForm              = "gfm3u8"
-	PlayFormCloud         = "gofilm"
-	PlayFormAll           = "gofilm$$$gfmu38"
+	PlayForm              = "bkm3u8"
+	PlayFormCloud         = "bracket"
+	PlayFormAll           = "bracket$$$bkm3u8"
 	RssVersion            = "5.1"
 )

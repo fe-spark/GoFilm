@@ -1,4 +1,4 @@
-# Bracket (GoFilm)
+# Bracket
 
 Bracket 是一个影视聚合站点项目，包含：
 

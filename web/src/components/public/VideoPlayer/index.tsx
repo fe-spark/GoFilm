@@ -47,7 +47,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     const art = new Artplayer({
       container: artRef.current,
-      id: "gofilm-player",
+      id: "bracket-player",
       url: src,
       poster: poster || "",
       autoplay,
