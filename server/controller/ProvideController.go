@@ -92,3 +92,33 @@ func HandleProvide(c *gin.Context) {
 		})
 	}
 }
+
+// HandleProvideConfig 提供给 TVBox/影视仓 的一键网络配置 (config.json)
+func HandleProvideConfig(c *gin.Context) {
+	// 动态获取当前请求的主机地址(包含协议和端口)
+	scheme := "http"
+	if c.Request.TLS != nil {
+		scheme = "https"
+	}
+	host := c.Request.Host
+	apiPath := scheme + "://" + host + "/provide/vod/"
+
+	configJson := gin.H{
+		"spider":    "",
+		"wallpaper": "",
+		"logo":      "",
+		"sites": []gin.H{
+			{
+				"key":         "Bracket",
+				"name":        "🌟 Bracket 私人影视库全量",
+				"type":        1,
+				"api":         apiPath,
+				"searchable":  1,
+				"quickSearch": 1,
+				"filterable":  1,
+			},
+		},
+	}
+	
+	c.JSON(200, configJson)
+}

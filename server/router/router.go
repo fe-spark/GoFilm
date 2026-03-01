@@ -128,10 +128,10 @@ func SetupRouter() *gin.Engine {
 
 	}
 
-	// 供第三方采集的API
 	provideRoute := r.Group(`/provide`)
 	{
-		provideRoute.GET(`/vod`, controller.HandleProvide)
+		provideRoute.GET(`/vod`, controller.HandleProvide)       // CMS资源API
+		provideRoute.GET(`/config`, controller.HandleProvideConfig) // TVBox/影视仓聚合网络配置API
 	}
 
 	return r
